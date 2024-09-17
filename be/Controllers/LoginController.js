@@ -27,32 +27,27 @@ router.post('/login', async (req, res) => {
 });
 
 router.post('/register', async (req, res) => {
+    const FirstName = req.body["First Name"];
+    const LastName = req.body["Last Name"];
+    const Username = req.body.Username;
+    const Password = req.body.Password;
+    const admin = false // the new user cannot create an admin users
     try {
-        const token = req.headers["token"]
-        if (!token) {
-            const FirstName = req.body["First Name"];
-            const LastName = req.body["Last Name"];
-            const Username = req.body.Username;
-            const Password = req.body.Password;
-            const admin = false // User cannot create admin users
-        }
-        else { // If token is present, it means the user is an admin
-            const decoded = jwt.verify(token, process.env.ADMIN_SECRET_KEY); // Verify token
-            const FirstName = req.body["First Name"];
-            const LastName = req.body["Last Name"];
-            const Username = req.body.Username;
-            const Password = req.body.Password;
-            const admin = true // Admin can create admin users
-        }
-
         if (!FirstName || !LastName || !Username || !Password) { // Check if all fields are entered
             return res.status(400).json({ error: 'Please enter all fields' });
         }
-
+        const body = {
+            "First Name": FirstName,
+            "Last Name": LastName,
+            "Username": Username,
+            "Password": Password,
+            "admin": admin
+        }
+        const newUser = await LoginService.addUserService(body); // Call the addUserService function from the LoginService
         // enter logic to create new user
         // save user to database
 
-        return res.status(201).json({ sucess: true, message: 'User registered successfully' });
+        return res.status(201).json({ sucess: true, message: 'User registered successfully', user: newUser });
     } catch (error) {
         return res.status(500).json({ message: error.message }); // Return error message
     }
