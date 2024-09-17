@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-LoginService = require('../Services/LoginService');
+UsersService = require('../Services/UsersService');
 const jwt = require('jsonwebtoken');
 
 // Load environment variables 
@@ -13,7 +13,7 @@ router.post('/login', async (req, res) => {
         if (!Username || !Password) {
             return res.status(400).json({ error: 'Please enter username and password' });
         }
-        const users = await LoginService.getUsersService();
+        const users = await UsersService.getUsersService();
         const user = users.find(user => user.Username === Username && user.Password === Password);
         if (!user) {
             return res.json({ error: 'Invalid username or password' });
@@ -41,9 +41,10 @@ router.post('/register', async (req, res) => {
             "Last Name": LastName,
             "Username": Username,
             "Password": Password,
-            "admin": admin
+            "admin": admin,
+            "Registration Date": new Date()
         }
-        const newUser = await LoginService.addUserService(body); // Call the addUserService function from the LoginService
+        const newUser = await UsersService.addUserService(body); // Call the addUserService function from the UsersService
         // enter logic to create new user
         // save user to database
 

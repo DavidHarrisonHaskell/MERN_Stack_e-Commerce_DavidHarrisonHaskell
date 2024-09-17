@@ -1,15 +1,15 @@
-LoginRepository = require('../Repositories/LoginRepository');
+UsersRepository = require('../Repositories/UsersRepository');
 
 const getUsersService = () => {
-    return LoginRepository.getUsersRepository();
+    return UsersRepository.getUsersRepository();
 }
 
 const getUsersServiceById = (id) => {
-    return LoginRepository.getUsersRepositoryById(id);
+    return UsersRepository.getUsersRepositoryById(id);
 }
 
 const addUserService = (body) => {
-    return LoginRepository.addUserRepository(body);
+    return UsersRepository.addUserRepository(body);
 }
 
 module.exports = { getUsersService, getUsersServiceById, addUserService }; // This is a custom middleware function that exports the getUsersService function.

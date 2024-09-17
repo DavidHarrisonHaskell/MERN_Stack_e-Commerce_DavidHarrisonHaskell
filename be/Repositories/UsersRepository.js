@@ -1,16 +1,16 @@
-const LoginModel = require('../Models/LoginModel'); // This imports the LoginModel from the Models folder.
+const UsersModel = require('../Models/UsersModel'); // This imports the UsersModel from the Models folder.
 
 const getUsersRepository = async () => {
-    const result = await LoginModel.find({}); // This returns all the users from the database.
+    const result = await UsersModel.find({}); // This returns all the users from the database.
     return result
 }
 
 const getUsersRepositoryById = async (id) => {
-    const result = await LoginModel.findById(id); // This returns the user with the specified id from the database.
+    const result = await UsersModel.findById(id); // This returns the user with the specified id from the database.
     return result
 }
 const addUserRepository = async (body) => {
-    const user = new LoginModel(body); // This creates a new user object.
+    const user = new UsersModel(body); // This creates a new user object.
     await user.save(); // This saves the new user to the database.
     return user
 }
