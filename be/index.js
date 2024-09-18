@@ -13,6 +13,9 @@ app.use("/auth", LoginController); // This is a built-in middleware function in 
 const adminController = require("./Controllers/AdminController"); // This is a custom middleware function that requires the AdminController.
 app.use("/admin", adminController); // This is a built-in middleware function in Express. It mounts the specified middleware function or functions at the specified path.
 
+const usersController = require("./Controllers/UsersController"); // This is a custom middleware function that requires the UsersController.
+app.use("/users", usersController); // This is a built-in middleware function in Express. It mounts the specified middleware function or functions at the specified path.
+
 const port = 8000; // This is the port number that the server will listen on.
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`) // This is a built-in method in Express. It binds and listens for connections on the specified port.

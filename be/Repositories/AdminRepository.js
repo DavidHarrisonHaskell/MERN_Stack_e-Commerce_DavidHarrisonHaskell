@@ -40,6 +40,12 @@ const addUserRepository = async (body) => {
     return user;
 }
 
+const deleteUserRepository = async (id) => {
+    const result = await UsersModel.findByIdAndDelete(id); // This deletes the user with the specified id from the database.
+    return result
+}
+
+
 ////////////////////////////////////////
 
 // product repository functions
@@ -49,8 +55,16 @@ const getProductsRepository = async () => {
     return products;
 }
 
+const addProductRepository = async (body) => {
+    const product = new ProductsModel(body);
+    await product.save();
+    return product;
+}
 
-
+const deleteProductRepository = async (id) => {
+    const result = await ProductsModel.findByIdAndDelete(id); // This deletes the product with the specified id from the database.
+    return result;
+}
 
 ////////////////////////////////////////
 
@@ -59,7 +73,12 @@ module.exports = {
     addCategoryRepository,
     updateCategoryRepository,
     deleteCategoryRepository,
+    ///////////////////////
     getUsersRepository,
     addUserRepository,
-    getProductsRepository    
+    deleteUserRepository,
+    ///////////////////////
+    getProductsRepository,
+    addProductRepository,
+    deleteProductRepository
 }; // This is a custom middleware function that exports the getCategoriesRepository function.

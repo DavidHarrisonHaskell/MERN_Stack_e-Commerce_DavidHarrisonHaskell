@@ -76,8 +76,7 @@ router.post('/users', verifyAdmin, async (req, res) => { // This is a route that
         if (!FirstName || !LastName || !Username || !Password) {
             return res.status(400).json({ error: 'Please enter all fields' });
         }
-        let RegistrationDate
-
+        let RegistrationDate // This is the date the user registered or the current date if the user did not specify a date
         req.body["Registration Date"] ? RegistrationDate = req.body["Registration Date"] : RegistrationDate = new Date();
         console.log("req.body['Registration Date']", req.body["Registration Date"])
         const body = {
@@ -96,6 +95,18 @@ router.post('/users', verifyAdmin, async (req, res) => { // This is a route that
     }
 });
 
+// TODO: ENTER PUT SECTION OF CODE for updating user
+
+router.delete('/users/:id', verifyAdmin, async (req, res) => { // This is a route that deletes a user if the user is an admin
+    const id = req.params.id;
+    try {
+        const deletedUser = await adminService.deleteUserService(id);
+        return res.json({ success: true, message: 'User deleted successfully', user: deletedUser });
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+});
+
 ////////////////////////////////////////
 
 // product routes
@@ -108,5 +119,44 @@ router.get('/products', verifyAdmin, async (req, res) => { // This is a route th
     }
 });
 
+router.post('/products', verifyAdmin, async (req, res) => { // This is a route that adds a new product if the user is an admin
+    try {
+        const Title = req.body.Title;
+        const Category = req.body.Category;
+        const Description = req.body.Description;
+        const Price = req.body.Price;
+        const LinkToPic = req.body["Link to pic"];
+        if (!Title || !Category || !Description || !Price || !LinkToPic) {
+            return res.status(400).json({ error: 'Please enter all fields' });
+        }
+        const body = {
+            Title: Title,
+            Category: Category,
+            Description: Description,
+            Price: Price,
+            "Link to pic": LinkToPic,
+            "Bought Buy": []
+        }
+        const newProduct = await adminService.addProductService(body);
+        return res.status(201).json({ success: true, message: 'Product added successfully', product: newProduct });
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+});
+
+// TODO: ENTER PUT SECTION OF CODE for updating product
+
+router.delete('/products/:id', verifyAdmin, async (req, res) => { // This is a route that deletes a product if the user is an admin
+    const id = req.params.id;
+    try {
+        const deletedProduct = await adminService.deleteProductService(id);
+        return res.json({ success: true, message: 'Product deleted successfully', product: deletedProduct });
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+});
+
+
+// TODO: Make a route for getting statistics
 
 module.exports = router;

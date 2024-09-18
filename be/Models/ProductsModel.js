@@ -26,7 +26,7 @@ const ProductsSchema = new mongoose.Schema({
         type: String, // the ID of the category
     },
     "Description": {
-        type: Number,
+        type: String,
     },
     "Price": {
         type: Number,
