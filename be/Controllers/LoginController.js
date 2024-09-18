@@ -1,12 +1,12 @@
 const express = require('express');
-const router = express.Router();
-UsersService = require('../Services/UsersService');
+const Router = express.Router();
+UsersService = require('../Services/usersService');
 const jwt = require('jsonwebtoken');
 
 // Load environment variables 
 require('dotenv').config();
 
-router.post('/login', async (req, res) => {
+Router.post('/login', async (req, res) => {
     try {
         const Username = req.body.Username;
         const Password = req.body.Password;
@@ -26,7 +26,7 @@ router.post('/login', async (req, res) => {
     }
 });
 
-router.post('/register', async (req, res) => {
+Router.post('/register', async (req, res) => {
     const FirstName = req.body["First Name"];
     const LastName = req.body["Last Name"];
     const Username = req.body.Username;
@@ -54,4 +54,4 @@ router.post('/register', async (req, res) => {
     }
 });
 
-module.exports = router;
+module.exports = Router;

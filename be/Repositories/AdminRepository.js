@@ -1,6 +1,6 @@
-const CategoriesModel = require('../Models/CategoriesModel');
-const ProductsModel = require('../Models/ProductsModel');
-const UsersModel = require('../Models/UsersModel');
+const CategoriesModel = require('../Models/categoriesModel');
+const ProductsModel = require('../Models/productsModel');
+const UsersModel = require('../Models/usersModel');
 
 // category repository functions
 const getCategoriesRepository = async () => {

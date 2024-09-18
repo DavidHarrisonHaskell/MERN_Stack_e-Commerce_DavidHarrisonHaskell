@@ -1,6 +1,6 @@
-UsersRepository = require('../Repositories/UsersRepository');
+UsersRepository = require('../Repositories/usersRepository');
 
-// category service functions
+// admin: category service functions
 
 const getUsersService = () => {
     return UsersRepository.getUsersRepository();
@@ -14,5 +14,21 @@ const addUserService = (body) => {
     return UsersRepository.addUserRepository(body);
 }
 
+// user: service functions
 
-module.exports = { getUsersService, getUsersServiceById, addUserService }; // This is a custom middleware function that exports the getUsersService function.
+const getUserInformationService = (id) => {
+    return UsersRepository.getUsersRepositoryById(id);
+}
+
+const updateUserService = (id, body) => {
+    return UsersRepository.updateUserRepository(id, body);
+}
+
+module.exports = {
+    getUsersService,
+    getUsersServiceById,
+    addUserService,
+    //////////////////////////
+    getUserInformationService,
+    updateUserService
+}; // This is a custom middleware function that exports the getUsersService function.

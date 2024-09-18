@@ -1,4 +1,4 @@
-adminRepository = require('../Repositories/AdminRepository');
+adminRepository = require('../Repositories/adminRepository');
 
 // category service functions
 const getCategoriesService = () => {
