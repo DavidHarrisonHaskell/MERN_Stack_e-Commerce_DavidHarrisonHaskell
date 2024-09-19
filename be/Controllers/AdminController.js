@@ -86,7 +86,6 @@ Router.post('/users', verifyAdmin, async (req, res) => { // This is a route that
             "Password": Password,
             "admin": false,
             "Registration Date": RegistrationDate,
-            "Products Bought": []
         }
         const newUser = await adminService.addUserService(body);
         return res.status(201).json({ success: true, message: 'User registered successfully', user: newUser });
@@ -135,7 +134,6 @@ Router.post('/products', verifyAdmin, async (req, res) => { // This is a route t
             Description: Description,
             Price: Price,
             "Link to pic": LinkToPic,
-            "Bought Buy": []
         }
         const newProduct = await adminService.addProductService(body);
         return res.status(201).json({ success: true, message: 'Product added successfully', product: newProduct });

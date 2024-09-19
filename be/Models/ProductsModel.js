@@ -1,23 +1,6 @@
 const mongoose = require('mongoose');
 
-
-
-const BoughtBySchema = new mongoose.Schema({
-    "UserID": {
-        type: String,
-    },
-    "Name": {
-        type: String,
-    },
-    "Qty": {
-        type: Number,
-    },
-    "Date": {
-        type: Date,
-    }
-})
-
-
+// This is the schema for the Products collection.
 const ProductsSchema = new mongoose.Schema({
     "Title": {
         type: String,
@@ -33,9 +16,6 @@ const ProductsSchema = new mongoose.Schema({
     },
     "Link to pic": {
         type: String,
-    },
-    "Bought Buy": {
-        type: [BoughtBySchema],
     }
 }, { 
     collection: "Products",
