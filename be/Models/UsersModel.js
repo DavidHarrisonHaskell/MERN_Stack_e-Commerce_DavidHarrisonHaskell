@@ -18,6 +18,9 @@ const UsersSchema = new mongoose.Schema({
     },
     "Registration Date": {
         type: Date,
+    },
+    "allowOthersToSeeMyOrders": {
+        type: Boolean,
     }
 }, { 
     collection: "Users",

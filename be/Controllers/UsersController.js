@@ -8,7 +8,7 @@ require('dotenv').config();
 
 // users routes
 
-// user route for getting his own information from the database with route name user_information
+// user route for getting his own information from the database with the route name as his id
 Router.get('/:id', verifyUser, async (req, res) => {
     try {
         const user = await UsersService.getUserInformationService(req.params.id);
@@ -18,7 +18,7 @@ Router.get('/:id', verifyUser, async (req, res) => {
     }
 });
 
-
+// user route for updating his own information in the database with route name as his id
 Router.put('/:id', verifyUser, async (req, res) => {
     const id = req.params.id;
     try {
@@ -38,5 +38,14 @@ Router.put('/:id', verifyUser, async (req, res) => {
     }
 });
 
+// user route for getting all of his orders from the database
+Router.get('/:id/orders', verifyUser, async (req, res) => {
+    try {
+        const userOrders = await UsersService.getUserOrdersService(req.params.id);
+        return res.json(userOrders);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+});
 
 module.exports = Router;

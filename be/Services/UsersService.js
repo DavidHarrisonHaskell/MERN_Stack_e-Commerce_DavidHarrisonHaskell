@@ -24,11 +24,16 @@ const updateUserService = (id, body) => {
     return UsersRepository.updateUserRepository(id, body);
 }
 
+const getUserOrdersService = (id) => {
+    return UsersRepository.getUserOrdersRepository(id);
+}
+
 module.exports = {
     getUsersService,
     getUsersServiceById,
     addUserService,
     //////////////////////////
     getUserInformationService,
-    updateUserService
+    updateUserService,
+    getUserOrdersService
 }; // This is a custom middleware function that exports the getUsersService function.
