@@ -1,4 +1,5 @@
 adminRepository = require('../Repositories/adminRepository');
+UsersRepository = require('../Repositories/usersRepository');
 
 // category service functions
 const getCategoriesService = () => {
@@ -25,6 +26,38 @@ const deleteCategoryService = (id) => {
 // user service functions
 const getUsersService = () => {
     return adminRepository.getUsersRepository();
+}
+
+const getUsersInformationService = async () => {
+    // need to find the Products Bought information for each user 
+    // and return the user information with the Products Bought information
+    const allOrders = await UsersRepository.getAllOrdersRepository();
+    let allUsers = await adminRepository.getUsersRepository();
+    allUsers = allUsers.filter(user => user.admin === false);
+
+    const allUsersInformation = allUsers.map(user => {
+        let userInformation = {
+            "User ID": user._id,
+            "First Name": user["First Name"],
+            "Last Name": user["Last Name"],
+            "allowOthersToSeeMyOrders": user.allowOthersToSeeMyOrders,
+            "Products Bought": []
+        }
+        // get all the orders of the user
+        const userOrders = allOrders.filter(order => order.UserID == user._id);
+        //find all the products bought by the user
+        let productsBought = userOrders.flatMap(order =>
+            order.Orders.map(product => ({
+                "ProductID": product.ProductID,
+                "Product Title": product["Product Title"],
+                "Quantity": product.Quantity,
+                "Order Date": order["Order Date"]
+            }))
+        )
+        userInformation["Products Bought"] = productsBought;
+        return userInformation;
+    })
+    return allUsersInformation;
 }
 
 const addUserService = (body) => {
@@ -60,6 +93,7 @@ module.exports = {
     ///////////////////////
     addUserService,
     getUsersService,
+    getUsersInformationService,
     deleteUserService,
     ///////////////////////
     getProductsService,

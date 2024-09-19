@@ -48,4 +48,53 @@ Router.get('/:id/orders', verifyUser, async (req, res) => {
     }
 });
 
+// user route for getting all of the products from the database
+
+// However, the number of sold units for a given product 
+// only represents the number of units sold to users who 
+// have allowed their information to be shared. 
+
+// The number of units sold to the user viewing the product are represented in the
+// number of units sold. This is regardless of whether the user has allowed 
+// his or her information to be shared.
+Router.get('/:id/products', verifyUser, async (req, res) => {
+    try {
+        const products = await UsersService.getProductsService(req.params.id);
+        return res.json(products);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+});
+
+
+// the route for posting an order should be /:id/orders and receives in its body
+// an array of objects with the following structure:
+// const ProductInformationSchema = new mongoose.Schema({
+//     "ProductID": {
+//         type: String,
+//     },
+//     "Product Title": {
+//         type: String,
+//     },
+//     "Quantity": {
+//         type: Number,
+//     }
+// }, {
+//     versionKey: false
+// });
+// =>  "Orders": {
+//         type: [ProductInformationSchema],
+//     }
+Router.post('/:id/orders', verifyUser, async (req, res) => {
+    try {
+        const id = req.params.id;
+        const orders = req.body;
+        const newOrder = await UsersService.addOrderService(id, orders);
+        return res.status(201).json({ success: true, message: 'Order created successfully', order: newOrder });
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+});
+
+
 module.exports = Router;

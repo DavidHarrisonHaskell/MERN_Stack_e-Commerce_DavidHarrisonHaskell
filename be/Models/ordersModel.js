@@ -1,12 +1,6 @@
 const mongoose = require('mongoose');
 
-const OrdersSchema = new mongoose.Schema({
-    "UserID": {
-        type: String,
-    },
-    "User First Name": {
-        type: String,
-    },
+const ProductInformationSchema = new mongoose.Schema({
     "ProductID": {
         type: String,
     },
@@ -15,6 +9,20 @@ const OrdersSchema = new mongoose.Schema({
     },
     "Quantity": {
         type: Number,
+    }
+}, {
+    versionKey: false
+});
+
+const OrdersSchema = new mongoose.Schema({
+    "UserID": {
+        type: String,
+    },
+    "User First Name": {
+        type: String,
+    },
+    "Orders": {
+        type: [ProductInformationSchema],
     },
     "Order Date": {
         type: Date,

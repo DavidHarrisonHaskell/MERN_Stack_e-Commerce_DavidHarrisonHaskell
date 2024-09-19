@@ -34,6 +34,11 @@ const getUsersRepository = async () => {
     return users;
 }
 
+const getUsersInformationRepository = async () => {
+    const users = await UsersModel.find({});
+    return users;
+}
+
 const addUserRepository = async (body) => {
     const user = new UsersModel(body);
     await user.save();
@@ -75,6 +80,7 @@ module.exports = {
     deleteCategoryRepository,
     ///////////////////////
     getUsersRepository,
+    getUsersInformationRepository,
     addUserRepository,
     deleteUserRepository,
     ///////////////////////

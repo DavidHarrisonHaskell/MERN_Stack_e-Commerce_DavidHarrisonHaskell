@@ -67,6 +67,16 @@ Router.get('/users', verifyAdmin, async (req, res) => { // This is a route that 
     }
 });
 
+// TODO: get all users information including a Products Bought section
+Router.get('/users_information', verifyAdmin, async (req, res) => { // This is a route that returns all users information if the user is an admin
+    try {
+        const users = await adminService.getUsersInformationService();
+        return res.json(users);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+});
+
 Router.post('/users', verifyAdmin, async (req, res) => { // This is a route that adds a new user if the user is an admin
     const FirstName = req.body["First Name"];
     const LastName = req.body["Last Name"];
@@ -96,6 +106,7 @@ Router.post('/users', verifyAdmin, async (req, res) => { // This is a route that
 
 // TODO: Add a route to update a user
 
+
 Router.delete('/users/:id', verifyAdmin, async (req, res) => { // This is a route that deletes a user if the user is an admin
     const id = req.params.id;
     try {
@@ -117,6 +128,8 @@ Router.get('/products', verifyAdmin, async (req, res) => { // This is a route th
         return res.status(500).json({ message: error.message });
     }
 });
+
+// TODO: get products information including a Bought Buy section
 
 Router.post('/products', verifyAdmin, async (req, res) => { // This is a route that adds a new product if the user is an admin
     try {
@@ -155,6 +168,24 @@ Router.delete('/products/:id', verifyAdmin, async (req, res) => { // This is a r
     }
 });
 
+
+////////////////////////////////////////
+
+// order routes
+
+// TODO: Add a route for posting an order
+
+// TODO: Add a route for getting all orders
+
+// TODO: Add a route for getting all orders of a specific user
+
+// TODO: Add a route for updating an order
+
+// TODO: Add a route for deleting an order
+
+
+////////////////////////////////////////
+// statistics route
 
 // TODO: Add a route for getting statistics information
 
