@@ -64,8 +64,18 @@ const addUserService = (body) => {
     return adminRepository.addUserRepository(body);
 }
 
-const deleteUserService = (id) => {
-    return adminRepository.deleteUserRepository(id);
+const updateUserService = (id, body) => {
+    return adminRepository.updateUserRepository(id, body);
+}
+
+const deleteUserService = async (id) => {
+    // delete the user from the database
+    const deleted_user = await adminRepository.deleteUserRepository(id);
+    console.log("deleted_user", deleted_user);
+    // delete all of that user's orders from the database
+    const deleted_orders = await adminRepository.deleteAllOrdersOfUserRepository(id);
+    console.log("deleted_orders", deleted_orders);
+    return { deleted_user, deleted_orders };
 }
 
 
@@ -92,6 +102,21 @@ const getOrdersService = () => {
     return adminRepository.getOrdersRepository();
 }
 
+const getUserOrdersService = (id) => {
+    return adminRepository.getUserOrdersRepository(id);
+}
+
+const updateOrderService = (id, body) => {
+    return adminRepository.updateOrderRepository(id, body);
+}
+
+const deleteOrdersService = (id) => {
+    return adminRepository.deleteOrdersRepository(id);
+}
+
+const deleteAllOrdersOfUserService = (id) => {
+    return adminRepository.deleteAllOrdersOfUserRepository(id);
+}
 
 module.exports = {
     getCategoriesService,
@@ -102,11 +127,16 @@ module.exports = {
     addUserService,
     getUsersService,
     getUsersInformationService,
+    updateUserService,
     deleteUserService,
     ///////////////////////
     getProductsService,
     addProductService,
     deleteProductService,
     ///////////////////////
-    getOrdersService
+    getOrdersService,
+    getUserOrdersService,
+    updateOrderService,
+    deleteOrdersService,
+    deleteAllOrdersOfUserService
 }; // This is a custom middleware function that exports the getCategoriesService function.

@@ -88,7 +88,6 @@ Router.post('/users', verifyAdmin, async (req, res) => { // This is a route that
         }
         let RegistrationDate // This is the date the user registered or the current date if the user did not specify a date
         req.body["Registration Date"] ? RegistrationDate = req.body["Registration Date"] : RegistrationDate = new Date();
-        console.log("req.body['Registration Date']", req.body["Registration Date"])
         const body = {
             "First Name": FirstName,
             "Last Name": LastName,
@@ -104,7 +103,31 @@ Router.post('/users', verifyAdmin, async (req, res) => { // This is a route that
     }
 });
 
-// TODO: Add a route to update a user
+// A route to update a user
+Router.put('/users/:id', verifyAdmin, async (req, res) => { // This is a route that updates a user if the user is an admin
+    const id = req.params.id;
+    const FirstName = req.body["First Name"];
+    const LastName = req.body["Last Name"];
+    const Username = req.body.Username;
+    const Password = req.body.Password;
+    const RegistrationDate = req.body["Registration Date"];
+    const allowOthersToSeeMyOrders = req.body.allowOthersToSeeMyOrders;
+    try {
+        let body = {}       
+        // Check if the user entered the field and add it to the body object
+        FirstName ? body["First Name"] = FirstName : null;
+        LastName ? body["Last Name"] = LastName : null;
+        Username ? body.Username = Username : null;
+        Password ? body.Password = Password : null;
+        RegistrationDate ? body["Registration Date"] = RegistrationDate : null;
+        allowOthersToSeeMyOrders ? body.allowOthersToSeeMyOrders = allowOthersToSeeMyOrders : null;
+
+        const updatedUser = await adminService.updateUserService(id, body);
+        return res.json({ success: true, message: 'User updated successfully', user: updatedUser });
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+});
 
 
 Router.delete('/users/:id', verifyAdmin, async (req, res) => { // This is a route that deletes a user if the user is an admin
@@ -212,11 +235,50 @@ Router.get('/orders', verifyAdmin, async (req, res) => {
     }
 });
 
-// TODO: Add a route for getting all orders of a specific user
+// A route for getting all orders of a specific user
+Router.get('/:id/orders', verifyAdmin, async (req, res) => {
+    try {
+        const id = req.params.id;
+        const orders = await adminService.getUserOrdersService(id);
+        return res.json(orders);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+});
 
-// TODO: Add a route for updating an order
 
-// TODO: Add a route for deleting an order
+Router.put('/orders/:id', verifyAdmin, async (req, res) => {
+    const order_id = req.params.id;
+    const order = req.body;
+    try {
+        const updatedOrder = await adminService.updateOrderService(order_id, order);
+        return res.json({ success: true, message: 'Order updated successfully', order: updatedOrder });
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+});
+// Note: the id is the id of the order,
+// not the id of the user who made the order
+Router.delete('/orders/:id', verifyAdmin, async (req, res) => {
+    const order_id = req.params.id;
+    try {
+        const deletedOrder = await adminService.deleteOrdersService(order_id);
+        return res.json({ success: true, message: 'Order deleted successfully', order: deletedOrder });
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+});
+
+// delete all of the orders of a user
+Router.delete('/:id/orders', verifyAdmin, async (req, res) => {
+    const id = req.params.id;
+    try {
+        const deletedOrders = await adminService.deleteAllOrdersOfUserService(id);
+        return res.json({ success: true, message: 'Orders deleted successfully', orders: deletedOrders });
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+});
 
 
 ////////////////////////////////////////

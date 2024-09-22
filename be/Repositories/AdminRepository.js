@@ -46,6 +46,11 @@ const addUserRepository = async (body) => {
     return user;
 }
 
+const updateUserRepository = async (id, body) => {
+    const updatedUser = await UsersModel.findByIdAndUpdate(id, body, { new: true }); // This updates the user with the specified id from the database.
+    return updatedUser;
+}
+
 const deleteUserRepository = async (id) => {
     const result = await UsersModel.findByIdAndDelete(id); // This deletes the user with the specified id from the database.
     return result
@@ -81,6 +86,27 @@ const getOrdersRepository = async () => {
     return orders;
 }
 
+const getUserOrdersRepository = async (id) => {
+    const orders = await OrdersModel.find({ UserID: id });
+    return orders;
+}
+
+const updateOrderRepository = async (id, body) => {
+    const updatedOrder = await OrdersModel.findByIdAndUpdate(id, body, { new: true }); // This updates the order with the specified id from the database.
+    return updatedOrder;
+}
+
+const deleteOrdersRepository = async (id) => {
+    const result = await OrdersModel.findByIdAndDelete(id); // This deletes the order with the specified id from the database.
+    return result;
+}
+
+// delete all of the orders of a user
+const deleteAllOrdersOfUserRepository = async (id) => {
+    const result = await OrdersModel.deleteMany({ UserID: id }); // This deletes all orders of the user with the specified id from the database.
+    return result;
+}
+
 module.exports = {
     getCategoriesRepository,
     addCategoryRepository,
@@ -90,11 +116,16 @@ module.exports = {
     getUsersRepository,
     getUsersInformationRepository,
     addUserRepository,
+    updateUserRepository,
     deleteUserRepository,
     ///////////////////////
     getProductsRepository,
     addProductRepository,
     deleteProductRepository,
     ///////////////////////
-    getOrdersRepository
+    getOrdersRepository,
+    getUserOrdersRepository,
+    updateOrderRepository,
+    deleteOrdersRepository,
+    deleteAllOrdersOfUserRepository,
 }; // This is a custom middleware function that exports the getCategoriesRepository function.
