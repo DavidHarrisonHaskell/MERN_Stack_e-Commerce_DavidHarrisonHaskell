@@ -90,6 +90,10 @@ const addProductService = (body) => {
     return adminRepository.addProductRepository(body);
 }
 
+const updateProductService = (id, body) => {
+    return adminRepository.updateProductRepository(id, body);
+}
+
 const deleteProductService = (id) => {
     return adminRepository.deleteProductRepository(id);
 }
@@ -132,6 +136,7 @@ module.exports = {
     ///////////////////////
     getProductsService,
     addProductService,
+    updateProductService,
     deleteProductService,
     ///////////////////////
     getOrdersService,

@@ -72,6 +72,12 @@ const addProductRepository = async (body) => {
     return product;
 }
 
+const updateProductRepository = async (id, body) => {
+    const updatedProduct = await ProductsModel.findByIdAndUpdate(id, body,
+        { new: true }); // This updates the product with the specified id from the database.
+    return updatedProduct;
+}
+
 const deleteProductRepository = async (id) => {
     const result = await ProductsModel.findByIdAndDelete(id); // This deletes the product with the specified id from the database.
     return result;
@@ -121,6 +127,7 @@ module.exports = {
     ///////////////////////
     getProductsRepository,
     addProductRepository,
+    updateProductRepository,
     deleteProductRepository,
     ///////////////////////
     getOrdersRepository,

@@ -179,7 +179,31 @@ Router.post('/products', verifyAdmin, async (req, res) => { // This is a route t
 });
 
 
-// TODO: Add a route to update a product
+// A route to update a product
+Router.put('/products/:id', verifyAdmin, async (req, res) => { // This is a route that updates a product if the user is an admin
+    const id = req.params.id;
+    const Title = req.body.Title;
+    const Category = req.body.Category;
+    const CategoryID = req.body.CategoryID;
+    const Description = req.body.Description;
+    const Price = req.body.Price;
+    const LinkToPic = req.body["Link to pic"];
+    try {
+        const body = {};        
+        // Check if the user entered the field and add it to the body object
+        Title ? body.Title = Title : null;
+        Category ? body.Category = Category : null;
+        CategoryID ? body.CategoryID = CategoryID : null;
+        Description ? body.Description = Description : null;
+        Price ? body.Price = Price : null;
+        LinkToPic ? body["Link to pic"] = LinkToPic : null;
+
+        const updatedProduct = await adminService.updateProductService(id, body);
+        return res.json({ success: true, message: 'Product updated successfully', product: updatedProduct });
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+});
 
 Router.delete('/products/:id', verifyAdmin, async (req, res) => { // This is a route that deletes a product if the user is an admin
     const id = req.params.id;

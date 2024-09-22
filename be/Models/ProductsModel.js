@@ -8,6 +8,9 @@ const ProductsSchema = new mongoose.Schema({
     "Category": {
         type: String, // the ID of the category
     },
+    "CategoryID": {
+        type: String,
+    },
     "Description": {
         type: String,
     },
