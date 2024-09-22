@@ -1,6 +1,7 @@
 const CategoriesModel = require('../Models/categoriesModel');
 const ProductsModel = require('../Models/productsModel');
 const UsersModel = require('../Models/usersModel');
+const OrdersModel = require('../Models/ordersModel');
 
 // category repository functions
 const getCategoriesRepository = async () => {
@@ -73,6 +74,13 @@ const deleteProductRepository = async (id) => {
 
 ////////////////////////////////////////
 
+// orders repository functions
+
+const getOrdersRepository = async () => {
+    const orders = await OrdersModel.find({});
+    return orders;
+}
+
 module.exports = {
     getCategoriesRepository,
     addCategoryRepository,
@@ -86,5 +94,7 @@ module.exports = {
     ///////////////////////
     getProductsRepository,
     addProductRepository,
-    deleteProductRepository
+    deleteProductRepository,
+    ///////////////////////
+    getOrdersRepository
 }; // This is a custom middleware function that exports the getCategoriesRepository function.

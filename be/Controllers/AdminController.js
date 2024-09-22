@@ -1,6 +1,7 @@
 const express = require('express');
 const Router = express.Router();
 const adminService = require('../Services/adminService');
+const UsersService = require('../Services/usersService');
 const verifyAdmin = require('../Middlewares/verifyAdmin'); // Import the verifyAdmin middleware
 
 // Load environment variables
@@ -67,7 +68,6 @@ Router.get('/users', verifyAdmin, async (req, res) => { // This is a route that 
     }
 });
 
-// TODO: get all users information including a Products Bought section
 Router.get('/users_information', verifyAdmin, async (req, res) => { // This is a route that returns all users information if the user is an admin
     try {
         const users = await adminService.getUsersInformationService();
@@ -173,9 +173,44 @@ Router.delete('/products/:id', verifyAdmin, async (req, res) => { // This is a r
 
 // order routes
 
-// TODO: Add a route for posting an order
+// the route for posting an order should be /:id/orders and receives in its body
+// an array of objects with the following structure:
+// const ProductInformationSchema = new mongoose.Schema({
+//     "ProductID": {
+//         type: String,
+//     },
+//     "Product Title": {
+//         type: String,
+//     },
+//     "Quantity": {
+//         type: Number,
+//     }
+// }, {
+//     versionKey: false
+// });
+// =>  "Orders": {
+//         type: [ProductInformationSchema],
+//     }
+Router.post('/:id/orders', verifyAdmin, async (req, res) => {
+    try {
+        const id = req.params.id;
+        const orders = req.body;
+        const newOrder = await UsersService.addOrderService(id, orders);
+        return res.status(201).json({ success: true, message: 'Order created successfully', order: newOrder });
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+});
 
-// TODO: Add a route for getting all orders
+// A route for getting all orders
+Router.get('/orders', verifyAdmin, async (req, res) => {
+    try {
+        const orders = await adminService.getOrdersService();
+        return res.json(orders);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+});
 
 // TODO: Add a route for getting all orders of a specific user
 

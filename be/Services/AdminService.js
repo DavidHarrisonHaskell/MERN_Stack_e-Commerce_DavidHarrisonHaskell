@@ -71,7 +71,7 @@ const deleteUserService = (id) => {
 
 ///////////////////////
 
-// product service functions
+// products service functions
 const getProductsService = () => {
     return adminRepository.getProductsRepository();
 }
@@ -82,6 +82,14 @@ const addProductService = (body) => {
 
 const deleteProductService = (id) => {
     return adminRepository.deleteProductRepository(id);
+}
+
+///////////////////////
+
+// orders service functions
+
+const getOrdersService = () => {
+    return adminRepository.getOrdersRepository();
 }
 
 
@@ -98,5 +106,7 @@ module.exports = {
     ///////////////////////
     getProductsService,
     addProductService,
-    deleteProductService
+    deleteProductService,
+    ///////////////////////
+    getOrdersService
 }; // This is a custom middleware function that exports the getCategoriesService function.
