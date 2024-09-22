@@ -68,7 +68,7 @@ Router.get('/users', verifyAdmin, async (req, res) => { // This is a route that 
     }
 });
 
-Router.get('/users_information', verifyAdmin, async (req, res) => { // This is a route that returns all users information if the user is an admin
+Router.get('/users-information', verifyAdmin, async (req, res) => { // This is a route that returns all users information if the user is an admin
     try {
         const users = await adminService.getUsersInformationService();
         return res.json(users);
@@ -152,7 +152,15 @@ Router.get('/products', verifyAdmin, async (req, res) => { // This is a route th
     }
 });
 
-// TODO: get products information including a Bought Buy section
+// get products information including a Bought Buy section
+Router.get('/products-information', verifyAdmin, async (req, res) => { // This is a route that returns all products information if the user is an admin
+    try {
+        const products = await adminService.getProductsInformationService();
+        return res.json(products);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+});
 
 Router.post('/products', verifyAdmin, async (req, res) => { // This is a route that adds a new product if the user is an admin
     try {
@@ -308,8 +316,24 @@ Router.delete('/:id/orders', verifyAdmin, async (req, res) => {
 ////////////////////////////////////////
 // statistics route
 
-// TODO: Add a route for getting statistics information
+// A route for getting statistics information regarding the total number of products sold
+ Router.get('/statistics/total-products-sold', verifyAdmin, async (req, res) => {
+    try {
+        const statistics = await adminService.getStatisticsTotalProductsSoldService();
+        return res.json(statistics);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+});
 
+Router.get('/statistics/users-orders', verifyAdmin, async (req, res) => {
+    try {
+        const statistics = await adminService.getStatisticsUsersOrdersService();
+        return res.json(statistics);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+});
 
 
 module.exports = Router;

@@ -88,12 +88,12 @@ const deleteProductRepository = async (id) => {
 // orders repository functions
 
 const getOrdersRepository = async () => {
-    const orders = await OrdersModel.find({});
+    const orders = await OrdersModel.find({}).sort({ "Order Date": -1 });
     return orders;
 }
 
 const getUserOrdersRepository = async (id) => {
-    const orders = await OrdersModel.find({ UserID: id });
+    const orders = await OrdersModel.find({ UserID: id }).sort({ "Order Date": -1 }); // This returns all the orders of the user with the specified id from the database.
     return orders;
 }
 
