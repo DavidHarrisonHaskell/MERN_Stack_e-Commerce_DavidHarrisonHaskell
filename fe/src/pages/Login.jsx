@@ -42,7 +42,7 @@ const Login = () => {
             <input type="password" onChange={e => setPassword(e.target.value)} /><br />
             <button className='LoginButton' onClick={login}>Login</button>
             <label className="newUser"> New User?
-                <a className="register" href="/register" > Register</a>
+                <a className="register" href="/new-user-registration" > Register</a>
             </label>
         </div>
     )
