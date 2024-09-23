@@ -82,8 +82,9 @@ Router.post('/users', verifyAdmin, async (req, res) => { // This is a route that
     const LastName = req.body["Last Name"];
     const Username = req.body.Username;
     const Password = req.body.Password;
+    const allowOthersToSeeMyOrders = req.body.allowOthersToSeeMyOrders;
     try {
-        if (!FirstName || !LastName || !Username || !Password) {
+        if (!FirstName || !LastName || !Username || !Password || !allowOthersToSeeMyOrders) {
             return res.status(400).json({ error: 'Please enter all fields' });
         }
         let RegistrationDate // This is the date the user registered or the current date if the user did not specify a date
@@ -95,6 +96,7 @@ Router.post('/users', verifyAdmin, async (req, res) => { // This is a route that
             "Password": Password,
             "admin": false,
             "Registration Date": RegistrationDate,
+            "allowOthersToSeeMyOrders": allowOthersToSeeMyOrders
         }
         const newUser = await adminService.addUserService(body);
         return res.status(201).json({ success: true, message: 'User registered successfully', user: newUser });

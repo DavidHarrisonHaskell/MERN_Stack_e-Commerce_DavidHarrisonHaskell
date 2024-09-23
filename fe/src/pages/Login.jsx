@@ -20,6 +20,7 @@ const Login = () => {
                 localStorage.setItem('admin', response.data.admin)
             } else {
                 console.log("Login failed: ", "error: ", response.data.error, "success: ", response.data.success)
+                alert(response.data.error)
             }
         } catch (error) {
             if (error.response) {

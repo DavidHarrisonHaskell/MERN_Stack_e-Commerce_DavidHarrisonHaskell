@@ -32,8 +32,9 @@ Router.post('/register', async (req, res) => {
     const Username = req.body.Username;
     const Password = req.body.Password;
     const admin = false // the new user cannot create an admin users
+    const allowOthersToSeeMyOrders = req.body.allowOthersToSeeMyOrders;
     try {
-        if (!FirstName || !LastName || !Username || !Password) { // Check if all fields are entered
+        if (!FirstName || !LastName || !Username || !Password || !allowOthersToSeeMyOrders) { // Check if all fields are entered
             return res.status(400).json({ error: 'Please enter all fields' });
         }
         const body = {
@@ -42,7 +43,8 @@ Router.post('/register', async (req, res) => {
             "Username": Username,
             "Password": Password,
             "admin": admin,
-            "Registration Date": new Date()
+            "Registration Date": new Date(),
+            "allowOthersToSeeMyOrders": allowOthersToSeeMyOrders
         }
         const newUser = await UsersService.addUserService(body); // Call the addUserService function from the UsersService
         // enter logic to create new user
