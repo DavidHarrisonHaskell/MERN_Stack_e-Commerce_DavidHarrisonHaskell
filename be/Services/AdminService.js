@@ -1,5 +1,3 @@
-const { get } = require('mongoose');
-
 adminRepository = require('../Repositories/adminRepository');
 UsersRepository = require('../Repositories/usersRepository');
 
@@ -19,9 +17,6 @@ const updateCategoryService = (id, body) => {
 const deleteCategoryService = (id) => {
     return adminRepository.deleteCategoryRepository(id);
 }
-
-
-
 
 ///////////////////////
 
