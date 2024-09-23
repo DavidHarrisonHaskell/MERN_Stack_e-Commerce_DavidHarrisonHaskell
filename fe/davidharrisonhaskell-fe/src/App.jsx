@@ -1,11 +1,14 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
+import { Routes, Route } from 'react-router-dom'
+import Login from './pages/Login'
 
 function App() {
 
   return (
     <>
-      <h1>E-commerce Website</h1>
-      Hello <input type="text" placeholder="Enter your name" />
+      <Routes>
+        <Route path="/" element={<Login />} />
+      </Routes>
     </>
   )
 }
