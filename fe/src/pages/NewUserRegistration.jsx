@@ -30,6 +30,7 @@ const NewUserRegistration = () => {
             navigate('/');
         } catch (error) {
             console.error('error: ', error)
+            alert(error.response.data.error);
         }
     }
 

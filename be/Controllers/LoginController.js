@@ -14,7 +14,9 @@ Router.post('/login', async (req, res) => {
             return res.status(400).json({ success: false, error: 'Please enter username and password' });
         }
         const users = await UsersService.getUsersService();
+        console.log('users: ', users);
         const user = users.find(user => user.Username === Username && user.Password === Password);
+        console.log('user: ', user);
         if (!user) {
             return res.json({ error: 'Invalid username or password' });
         }

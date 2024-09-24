@@ -199,7 +199,6 @@ const getStatisticsUsersOrdersService = async () => {
         //find all the products bought by the user including the total quantity of each product bought 
         // by the user for all orders of the user
         // and the product title and the product ID
-        // FIXME: make the function work to get the correct statistics
         let orders = userOrdersList.flatMap(order =>
             order.Orders.map(product => ({
                 "ProductID": product.ProductID,
