@@ -10,6 +10,7 @@
     margin-right: auto;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.3),
         0 6px 20px 0 rgba(0, 0, 0, 0.3);
+    font-size: 16px;
 }
 
 .DynamicTable th {
@@ -18,6 +19,9 @@
     padding: 8px;
     overflow: hidden;
     position: relative;
+    font-size: 16px;
+    font-size: 16px;
+
 }
 
 .DynamicTable td {
@@ -25,11 +29,14 @@
     padding: 8px;
     max-height: 150px;
     overflow: hidden;
+    font-size: 16px;
+
     position: relative;
 }
 
 .fit-text {
     height: 10px;
+    font-size: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -42,6 +49,7 @@
 .DynamicTable td {
     border-color: #999;
     position: relative;
+    font-size: 16px;
     border: 1px solid black;
 }
 
@@ -49,6 +57,7 @@
     max-height: 250px;
     overflow-y: auto;
     padding-right: 10px;
+
 }
 
 .DynamicTable th {
@@ -56,6 +65,7 @@
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: left;
+    font-size: 16px;
     background-color: #f2f2f2;
     color: black;
     border: 1px solid black;
@@ -73,12 +83,13 @@
     margin-left: auto;
     margin-right: auto;
     border: 1px solid black;
+    font-size: 16px;
 }
 
 .subTable td {
     height: 50px;
     border: 1px solid black;
-
+    font-size: 16px;
 }
 
 .subTable td:hover {
@@ -88,5 +99,5 @@
 .subTable th {
     height: 50px;
     border: 1px solid black;
-
+    font-size: 16px;
 }
