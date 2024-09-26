@@ -23,7 +23,6 @@ const AdminCustomers = () => {
 
     const getUsersInformation = () => { // function works perfectly
 
-
         const getUserRegistrationDate = (date) => {
             const registrationDate = new Date(date);
             const day = String(registrationDate.getDate());

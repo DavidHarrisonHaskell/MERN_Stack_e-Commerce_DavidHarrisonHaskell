@@ -1,0 +1,51 @@
+.adminProductsComponent {
+    background-color: lightgrey;
+    padding: 150px;
+}
+
+
+.headerProductsAdmin{
+    text-align: center;
+    padding-bottom: 10px;
+}
+
+.AdminDescriptionProduct{
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    overflow-wrap: break-word;
+    border: 1px solid black;
+    border-radius: 10px;
+    height: 300px;
+    width: 100%;
+    overflow-y: auto;
+    text-align: left;
+    vertical-align: top;
+    resize: none;
+}
+
+
+.productInformationContainer{
+    background-color: white;
+    padding: 40px;
+    gap: 80px;
+    align-items: flex-start;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 100%;
+    border: 1px solid black;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.productInformationContainer input{
+    border-radius: 7px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+}
+.productInformationContainer textarea {
+    border-radius: 7px;
+    margin: 5px;
+    box-sizing: border-box;
+}
