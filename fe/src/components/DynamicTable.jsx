@@ -11,7 +11,7 @@ const DynamicTable = (props) => {
     const { columns, data, subColumns } = props;
 
     return (
-        <table bordered hover className='DynamicTable'>
+        <table className='DynamicTable'>
             <thead>
                 <tr>
                     {columns.map((column) => (

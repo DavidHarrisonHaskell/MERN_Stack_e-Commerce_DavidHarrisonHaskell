@@ -11,7 +11,7 @@ const AdminHome = () => {
     const categories = useSelector(state => state.categories.items);
     const categoriesStatus = useSelector(state => state.categories.status);
     const error = useSelector(state => state.categories.error);
-    console.log("AdminCategories: categories", categories, "categoriesStatus", categoriesStatus, "error", error);
+    // console.log("AdminCategories: categories", categories, "categoriesStatus", categoriesStatus, "error", error);
 
     useEffect(() => {
         if (categoriesStatus === 'idle') {

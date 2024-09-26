@@ -5,17 +5,24 @@ import { fetchUsers } from "../slices/usersSlice.jsx";
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import DynamicTable from "../components/DynamicTable.jsx";
-
+import Button from "react-bootstrap/Button";
+import './AdminCustomers.css';
 
 const AdminCustomers = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    const orders = useSelector(state => state.orders.items)
+    const ordersStatus = useSelector(state => state.orders.status);
+    const ordersError = useSelector(state => state.orders.error);
+
+    let users = useSelector(state => state.users.items);
+    users = users.filter(user => user.admin === false)
+    const usersStatus = useSelector(state => state.users.status);
+    const usersError = useSelector(state => state.users.error);
 
     const getUsersInformation = () => { // function works perfectly
-        const orders = useSelector(state => state.orders.items)
-        let users = useSelector(state => state.users.items);
-        users = users.filter(user => user.admin === false)
+
 
         const getUserRegistrationDate = (date) => {
             const registrationDate = new Date(date);
@@ -76,17 +83,6 @@ const AdminCustomers = () => {
 
 
 
-    const orders = useSelector(state => state.orders.items);
-    const ordersStatus = useSelector(state => state.orders.status);
-    const ordersError = useSelector(state => state.orders.error);
-    console.log("AdminCustomers: orders", orders, "ordersStatus", ordersStatus, "ordersError", ordersError);
-
-    const users = useSelector(state => state.users.items);
-    const usersStatus = useSelector(state => state.users.status);
-    const usersError = useSelector(state => state.users.error);
-    console.log("AdminCustomers: users", users, "usersStatus", usersStatus, "usersError", usersError);
-
-    console.log("getUsersInformation", getUsersInformation()); //works fine
 
     useEffect(() => {
         if (ordersStatus === 'idle') {
@@ -110,26 +106,31 @@ const AdminCustomers = () => {
             <Navbar />
             {ordersStatus === 'loading' && <p>Loading...</p>}
             {ordersStatus === 'failed' && <p>{ordersError}</p>}
+            {usersStatus === 'loading' && <p>Loading...</p>}
+            {usersStatus === 'failed' && <p>{usersError}</p>}
             {ordersStatus === 'succeeded' && usersStatus === 'succeeded' && (
-                <>
-                    <DynamicTable
-                        columns={[
-                            { key: "fullName", label: "Full Name" },
-                            { key: "joinedAt", label: "Joined At" },
-                            { key: "productsBought", label: "Products Bought" }
-                        ]}
-                        data={getUsersInformationForTable()}
-                        subColumns={[
-                            { key: "Product Title", label: "Product Title" },
-                            { key: "Quantity", label: "Quantity" },
-                            { key: "Order Date", label: "Order Date" }
-                        ]}
-                    />
-                    <button onClick={logOut}>Log Out</button>
-                </>
+                <div className="adminCustomersComponent">
+                    <div className="dynamicTableContainer">
+                        <DynamicTable
+                            columns={[
+                                { key: "fullName", label: "Full Name" },
+                                { key: "joinedAt", label: "Joined At" },
+                                { key: "productsBought", label: "Products Bought" }
+                            ]}
+                            data={getUsersInformationForTable()}
+                            subColumns={[
+                                { key: "Product Title", label: "Product Title" },
+                                { key: "Quantity", label: "Quantity" },
+                                { key: "Order Date", label: "Order Date" }
+                            ]}
+                        />
+                    </div>
+                    <br />
+                    <Button variant="secondary" onClick={logOut}>Log Out</Button>
+                </div>
             )}
         </>
     );
 }
 
-    export default AdminCustomers;
+export default AdminCustomers;
