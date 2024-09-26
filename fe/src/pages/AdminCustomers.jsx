@@ -109,7 +109,9 @@ const AdminCustomers = () => {
             {usersStatus === 'loading' && <p>Loading...</p>}
             {usersStatus === 'failed' && <p>{usersError}</p>}
             {ordersStatus === 'succeeded' && usersStatus === 'succeeded' && (
+
                 <div className="adminCustomersComponent">
+                    <h1 className='headerCustomersAdmin'><b>Customers</b></h1>
                     <div className="dynamicTableContainer">
                         <DynamicTable
                             columns={[

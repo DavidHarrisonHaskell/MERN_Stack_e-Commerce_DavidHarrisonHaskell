@@ -8,7 +8,8 @@
     transition: background-color 0.3s ease;
     margin-left: auto;
     margin-right: auto;
-    border: 1px solid black
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.3),
+        0 6px 20px 0 rgba(0, 0, 0, 0.3);
 }
 
 .DynamicTable th {

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { fetchCategories } from '../slices/categoriesSlice.jsx';
 import { useDispatch, useSelector } from 'react-redux';
+import Button from "react-bootstrap/Button";
 import './AdminCategories.css';
 
 const AdminHome = () => {
@@ -52,7 +53,7 @@ const AdminHome = () => {
                         </div>
                     </>
                 }
-                <button className='logOutAdmin' onClick={logOut}>Log Out</button>
+                <Button variant="secondary" onClick={logOut}>Log Out</Button>
 
             </div>
 
