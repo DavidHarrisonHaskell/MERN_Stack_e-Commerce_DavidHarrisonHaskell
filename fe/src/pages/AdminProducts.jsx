@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Button from 'react-bootstrap/Button';
 import './AdminProducts.css';
+import DynamicTable from "../components/DynamicTable.jsx";
 
 
 const AdminProducts = () => {
@@ -74,6 +75,20 @@ const AdminProducts = () => {
         navigate('/login');
     }
 
+    const getProductInformationForTable = (productInformation) => {
+        let boughtBy = productInformation["Bought By"];
+        const data = boughtBy.map(product => {
+            console.log("product", product);
+            console.log("boughtBy", boughtBy);
+            console.log("User First Name",product["User First Name"], "Quantity", product["Quantity"], "Order Date", product["Order Date"]);
+            return {
+                "User First Name": product["User First Name"],
+                "Quantity": product["Quantity"],
+                "Order Date": product["Order Date"]
+            }
+        })
+        return data;
+    }
 
     return (
         <>
@@ -98,20 +113,16 @@ const AdminProducts = () => {
                             <div>
                                 <span><b>Price: </b><input value={productInformation.Price} readOnly /></span><br /><br />
                                 <span><b>Link to pic: </b><input value={productInformation["Link to pic"]} readOnly /></span><br /><br />
-                                <li>Link to pic: {productInformation["Link to pic"]}</li><br />
-                                <div>Bought By: {productInformation["Bought By"].map((the_productInformation, index2) => {
-                                    return (
-                                        <ul key={index2}>
-                                            {/* <li>User ID: {the_productInformation["User ID"]}</li><br /> */}
-                                            <li>User First Name: {the_productInformation["User First Name"]}</li><br />
-                                            {/* <li>ProductID: {the_productInformation.ProductID}</li><br /> */}
-                                            {/* <li>Product Title: {the_productInformation["Product Title"]}</li><br /> */}
-                                            <li>Quantity: {the_productInformation.Quantity}</li><br />
-                                            <li>productInformation Date: {the_productInformation["Order Date"]}</li>
-                                        </ul>
-                                    );
-                                })}
-                                </div>
+                                <div>Bought By:</div>
+                                <DynamicTable
+                                    source="AdminProducts"
+                                    columns={[
+                                        { key: "User First Name", label: "User First Name" },
+                                        { key: "Quantity", label: "Quantity" },
+                                        { key: "Order Date", label: "Order Date" }
+                                    ]}
+                                    data={getProductInformationForTable(productInformation)}
+                                />
                             </div>
                         </div>
                     ))}

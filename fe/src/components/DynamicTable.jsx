@@ -8,10 +8,10 @@ import './DynamicTable.css';
 // the subColumns prop is an array of objects, each object has a key and a label
 
 const DynamicTable = (props) => {
-    const { columns, data, subColumns } = props;
-
+    const { columns, data, subColumns, source } = props;
+    const tableClassName = source === 'AdminProducts' ? 'DynamicTableProducts' : 'DynamicTable';
     return (
-        <table className='DynamicTable'>
+        <table className={tableClassName}>
             <thead>
                 <tr>
                     {columns.map((column) => (

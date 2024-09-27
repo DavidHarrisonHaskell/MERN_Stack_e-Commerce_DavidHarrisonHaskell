@@ -49,3 +49,8 @@
     margin: 5px;
     box-sizing: border-box;
 }
+
+.productBoughtByContainer{
+    max-height: 100px;
+    overflow-y: auto;
+}

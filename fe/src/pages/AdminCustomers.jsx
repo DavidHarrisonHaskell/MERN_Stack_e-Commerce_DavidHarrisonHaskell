@@ -113,6 +113,7 @@ const AdminCustomers = () => {
                     <h1 className='headerCustomersAdmin'><b>Customers</b></h1>
                     <div className="dynamicTableContainer">
                         <DynamicTable
+                            source="AdminCustomers"
                             columns={[
                                 { key: "fullName", label: "Full Name" },
                                 { key: "joinedAt", label: "Joined At" },
