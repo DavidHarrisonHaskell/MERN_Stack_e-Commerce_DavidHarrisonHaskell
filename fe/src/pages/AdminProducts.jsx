@@ -75,12 +75,13 @@ const AdminProducts = () => {
         navigate('/login');
     }
 
+
     const getProductInformationForTable = (productInformation) => {
         let boughtBy = productInformation["Bought By"];
         const data = boughtBy.map(product => {
             console.log("product", product);
             console.log("boughtBy", boughtBy);
-            console.log("User First Name",product["User First Name"], "Quantity", product["Quantity"], "Order Date", product["Order Date"]);
+            console.log("User First Name", product["User First Name"], "Quantity", product["Quantity"], "Order Date", product["Order Date"]);
             return {
                 "User First Name": product["User First Name"],
                 "Quantity": product["Quantity"],
@@ -114,15 +115,17 @@ const AdminProducts = () => {
                                 <span><b>Price: </b><input value={productInformation.Price} readOnly /></span><br /><br />
                                 <span><b>Link to pic: </b><input value={productInformation["Link to pic"]} readOnly /></span><br /><br />
                                 <div>Bought By:</div>
-                                <DynamicTable
-                                    source="AdminProducts"
-                                    columns={[
-                                        { key: "User First Name", label: "User First Name" },
-                                        { key: "Quantity", label: "Quantity" },
-                                        { key: "Order Date", label: "Order Date" }
-                                    ]}
-                                    data={getProductInformationForTable(productInformation)}
-                                />
+                                <div className="dynamicTableContainerProducts">
+                                    <DynamicTable
+                                        source="AdminProducts"
+                                        columns={[
+                                            { key: "User First Name", label: "User First Name" },
+                                            { key: "Quantity", label: "Quantity" },
+                                            { key: "Order Date", label: "Order Date" }
+                                        ]}
+                                        data={getProductInformationForTable(productInformation)}
+                                    />
+                                </div>
                             </div>
                         </div>
                     ))}
