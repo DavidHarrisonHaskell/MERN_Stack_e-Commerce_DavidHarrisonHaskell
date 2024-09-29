@@ -9,17 +9,11 @@ import Button from "react-bootstrap/Button";
 import './AdminCustomers.css';
 
 const AdminCustomers = () => {
-    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const orders = useSelector(state => state.orders.items)
-    const ordersStatus = useSelector(state => state.orders.status);
-    const ordersError = useSelector(state => state.orders.error);
-
     let users = useSelector(state => state.users.items);
     users = users.filter(user => user.admin === false)
-    const usersStatus = useSelector(state => state.users.status);
-    const usersError = useSelector(state => state.users.error);
 
     const getUsersInformation = () => { // function works perfectly
 
@@ -80,21 +74,6 @@ const AdminCustomers = () => {
         return data;
     }
 
-
-
-
-    useEffect(() => {
-        if (ordersStatus === 'idle') {
-            dispatch(fetchOrders());
-        }
-    }, [ordersStatus, dispatch]);
-
-    useEffect(() => {
-        if (usersStatus === 'idle') {
-            dispatch(fetchUsers());
-        }
-    }, [usersStatus, dispatch]);
-
     const logOut = () => {
         sessionStorage.clear();
         navigate('/login');
@@ -103,34 +82,28 @@ const AdminCustomers = () => {
     return (
         <>
             <Navbar />
-            {ordersStatus === 'loading' && <p>Loading...</p>}
-            {ordersStatus === 'failed' && <p>{ordersError}</p>}
-            {usersStatus === 'loading' && <p>Loading...</p>}
-            {usersStatus === 'failed' && <p>{usersError}</p>}
-            {ordersStatus === 'succeeded' && usersStatus === 'succeeded' && (
 
-                <div className="adminCustomersComponent">
-                    <h1 className='headerCustomersAdmin'><b>Customers</b></h1>
-                    <div className="dynamicTableContainer">
-                        <DynamicTable
-                            source="AdminCustomers"
-                            columns={[
-                                { key: "fullName", label: "Full Name" },
-                                { key: "joinedAt", label: "Joined At" },
-                                { key: "productsBought", label: "Products Bought" }
-                            ]}
-                            data={getUsersInformationForTable()}
-                            subColumns={[
-                                { key: "Product Title", label: "Product Title" },
-                                { key: "Quantity", label: "Quantity" },
-                                { key: "Order Date", label: "Order Date" }
-                            ]}
-                        />
-                    </div>
-                    <br />
-                    <Button variant="secondary" onClick={logOut}>Log Out</Button>
+            <div className="adminCustomersComponent">
+                <h1 className='headerCustomersAdmin'><b>Customers</b></h1>
+                <div className="dynamicTableContainer">
+                    <DynamicTable
+                        source="AdminCustomers"
+                        columns={[
+                            { key: "fullName", label: "Full Name" },
+                            { key: "joinedAt", label: "Joined At" },
+                            { key: "productsBought", label: "Products Bought" }
+                        ]}
+                        data={getUsersInformationForTable()}
+                        subColumns={[
+                            { key: "Product Title", label: "Product Title" },
+                            { key: "Quantity", label: "Quantity" },
+                            { key: "Order Date", label: "Order Date" }
+                        ]}
+                    />
                 </div>
-            )}
+                <br />
+                <Button variant="secondary" onClick={logOut}>Log Out</Button>
+            </div>
         </>
     );
 }

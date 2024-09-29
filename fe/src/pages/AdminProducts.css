@@ -1,8 +1,6 @@
 .adminProductsComponent {
     background-color: lightgrey;
-    padding: 300px;
-    padding-right: 400px;
-    padding-left: 400px;
+    padding: 100px;
 }
 
 
@@ -29,7 +27,7 @@
 
 .productInformationContainer{
     background-color: white;
-    padding: 40px;
+    padding: 10%;
     gap: 80px;
     align-items: flex-start;
     margin-top: 20px;

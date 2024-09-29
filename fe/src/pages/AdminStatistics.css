@@ -1,0 +1,41 @@
+.adminStatisticsComponent {
+    background-color: lightgrey;
+    padding: 100px;
+}
+
+
+.headerStatisticsAdmin {
+    text-align: center;
+    padding-bottom: 10px;
+}
+
+.pieChartStatistics{
+
+    margin-top: 20px;
+    /* margin-bottom: 20px; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    padding: 30px;
+}
+
+.productsSoldHeader{
+    text-align: center;
+    padding-bottom: 10px;
+}
+
+.productsBoughtHeader{
+    text-align: center;
+    padding-bottom: 10px;
+}
+
+.NoProductsBought{
+    text-align: center;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-top: 20px;
+}
