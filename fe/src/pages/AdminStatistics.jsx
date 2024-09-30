@@ -199,7 +199,6 @@ const AdminStatistics = () => {
                 labels: productTitles,
                 datasets: [
                     {
-                        label: null,
                         data: quantityBought,
                         backgroundColor: colors,
                         borderColor: colors.map(color => color.replace('0.6', '1')),
@@ -282,13 +281,13 @@ const AdminStatistics = () => {
                     ))}
                 </select>
                 <div className="barChartStatistics">
-                    {barChartData.labels.length > 0 && barChartData.datasets[0].data.length > 0 ? (
+                    {barChartData.labels.length > 0 && barChartData.datasets[0].data.length  > 0  ? (
                         <Bar
                             data={barChartData}
                             options={{
                                 plugins: {
                                     legend: {
-                                        display: true,
+                                        display: false,
                                         position: 'top',
                                     },
                                     datalabels: {

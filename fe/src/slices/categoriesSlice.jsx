@@ -1,4 +1,4 @@
-import {createSlice} from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 const initialState = {
@@ -6,6 +6,22 @@ const initialState = {
     status: 'idle',
     error: null
 }
+
+export const updateCategory = ({ id, name }) => async dispatch => {
+    try {
+        const token = sessionStorage.getItem('token');
+        const response = await axios.put(`http://127.0.0.1:8000/admin/categories/${id}`, { "Category": name }, {
+            headers: {
+                'token': token
+            }
+        });
+        dispatch(updateCategorySuccess(response.data))
+    } catch (error) {
+        dispatch(updateCategoryFailure(error.response))
+    }
+}
+
+
 
 const categoriesSlice = createSlice({
     name: 'categories',
@@ -21,11 +37,35 @@ const categoriesSlice = createSlice({
         fetchCategoriesFailure: (state, action) => {
             state.status = 'failed'
             state.error = action.payload
+        },
+        updateCategoryStart: state => {
+            state.status = 'loading'
+        },
+        updateCategorySuccess: (state, action) => {
+            state.status = 'succeeded'
+            console.log("action.payload.category", action.payload.category)
+            state.items = state.items.map(category => {
+                if (category._id === action.payload.category._id) {
+                    return action.payload.category
+                }
+                return category
+            })
+        },
+        updateCategoryFailure: (state, action) => {
+            state.status = 'failed'
+            state.error = action.payload
         }
     }
 })
 
-export const {fetchCategoriesStart, fetchCategoriesSuccess, fetchCategoriesFailure} = categoriesSlice.actions
+export const { 
+    fetchCategoriesStart, 
+    fetchCategoriesSuccess, 
+    fetchCategoriesFailure,
+    updateCategoryStart,
+    updateCategorySuccess,
+    updateCategoryFailure
+} = categoriesSlice.actions
 
 export const fetchCategories = () => async dispatch => {
     dispatch(fetchCategoriesStart()) // This will set the status to 'loading'
@@ -33,7 +73,7 @@ export const fetchCategories = () => async dispatch => {
         const token = sessionStorage.getItem('token');
         const response = await axios.get('http://127.0.0.1:8000/admin/categories', {
             headers: {
-            'token': token
+                'token': token
             }
         });
         dispatch(fetchCategoriesSuccess(response.data)) // This will set the status to 'succeeded'

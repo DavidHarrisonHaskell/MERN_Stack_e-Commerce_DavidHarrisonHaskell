@@ -7,12 +7,13 @@ import { fetchProducts } from '../slices/productsSlice.jsx';
 import { fetchUsers } from '../slices/usersSlice.jsx';
 import { useDispatch, useSelector } from 'react-redux';
 import Button from "react-bootstrap/Button";
+import { logout } from '../actions/index.jsx';
 import './AdminCategories.css';
 
 const AdminHome = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    
+
     // load all redux states
     const categories = useSelector(state => state.categories.items);
     const categoriesStatus = useSelector(state => state.categories.status);
@@ -26,6 +27,10 @@ const AdminHome = () => {
 
     const usersStatus = useSelector(state => state.users.status);
     const usersError = useSelector(state => state.users.error);
+
+    const [editingCategory, setEditingCategory] = useState(null);
+    const [updatedCategoryName, setUpdatedCategoryName] = useState('');
+    const [newCategoryName, setNewCategoryName] = useState('');
 
     // console.log("AdminCategories: categories", categories, "categoriesStatus", categoriesStatus, "error", error);
 
@@ -46,8 +51,31 @@ const AdminHome = () => {
 
     const logOut = () => {
         sessionStorage.clear();
+        dispatch(logout());
         navigate('/login');
     }
+
+    const handleEditCategory = (categoryId, currentName) => {
+        setEditingCategory(categoryId);
+        setUpdatedCategoryName(currentName);
+    }
+
+    const handleSave = (categoryId) => {
+        dispatch(updateCategory({ id: categoryId, name: updatedCategoryName }));
+        setEditingCategory(null);
+        console.log("Category updated", categoryId, updatedCategoryName);
+    }
+
+    const handleChange = (e) => {
+        setUpdatedCategoryName(e.target.innerText);
+        // console.log("updatedCategoryName", updatedCategoryName);
+    };
+
+    // const handleAddNewCategory = () => {
+    //     dispatch(addCategory({ Category: newCategoryName }));
+    //     setNewCategoryName('');
+    //     console.log("New category added", newCategoryName);
+    // }
 
     return (
         <>
@@ -55,19 +83,43 @@ const AdminHome = () => {
             <div className="adminCategoriesComponent">
                 <br />
                 {categoriesStatus === 'loading' && <p>Loading...</p>}
-                {categoriesStatus === 'failed' && <p>{error}</p>}
+                {categoriesStatus === 'failed' && <p>{console.log(error)}</p>}
                 {ordersStatus === 'loading' && <p>Loading...</p>}
-                {ordersStatus === 'failed' && <p>{ordersError}</p>}
+                {ordersStatus === 'failed' && <p>{console.log(ordersError)}</p>}
                 {productsStatus === 'loading' && <p>Loading...</p>}
-                {productsStatus === 'failed' && <p>{productsError}</p>}
-                {categoriesStatus === 'succeeded' && ordersStatus === 'succeeded' && productsStatus === 'succeeded' &&
+                {productsStatus === 'failed' && <p>{console.log(productsError)}</p>}
+                {usersStatus === 'loading' && <p>Loading...</p>}
+                {usersStatus === 'failed' && <p>{console.log(usersError)}</p>}
+                {categoriesStatus === 'succeeded' && ordersStatus === 'succeeded' && productsStatus === 'succeeded' && usersStatus === 'succeeded' &&
                     <>
                         <h1 className='headerCategoriesAdmin'><b>Categories</b></h1>
                         <div className='categoriesContainerAdmin'>
 
                             {categories.map(category => (
                                 <div className='categoryContainerAdmin' key={category._id}>
-                                    <h2>{category.Category}</h2>
+                                    {editingCategory === category._id ? (
+                                        <>
+                                            <h2
+                                            contentEditable
+                                            suppressContentEditableWarning
+                                            // onBlur={() => handleSave(category._id)}
+                                            onInput={handleChange}
+                                            className="categoryNameAdmin"
+                                            >
+                                                {category.Category} 
+                                            </h2>
+                                            <button className="updateCategoryButton" onClick={() => handleSave(category._id)}>Update</button>
+                                            <button className="deleteCategoryButton">Delete</button>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <h2 onClick={() => handleEditCategory(category._id,category.Category)}>{category.Category}</h2>
+                                            <button className="updateCategoryButton">Update</button>
+                                            <button className="deleteCategoryButton">Delete</button>
+                                        </>
+
+                                    )}
+
                                 </div>
                             ))}
                             <div className="newCategoryContainerAdmin">
@@ -75,6 +127,8 @@ const AdminHome = () => {
                                     type="text"
                                     placeholder="Add new category"
                                     className="newCategoryInputAdmin"
+                                    value={newCategoryName}
+                                    onChange={(e) => setNewCategoryName(e.target.value)}
                                 />
                                 <button className="newCategoryButtonAdmin">Add</button>
                             </div>
