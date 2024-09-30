@@ -199,7 +199,7 @@ const AdminStatistics = () => {
                 labels: productTitles,
                 datasets: [
                     {
-                        label: 'Products Bought',
+                        label: null,
                         data: quantityBought,
                         backgroundColor: colors,
                         borderColor: colors.map(color => color.replace('0.6', '1')),
