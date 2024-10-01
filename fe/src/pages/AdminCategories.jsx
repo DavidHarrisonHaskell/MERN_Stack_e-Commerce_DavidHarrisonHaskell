@@ -47,7 +47,7 @@ const AdminHome = () => {
         if (usersStatus === 'idle') {
             dispatch(fetchUsers());
         }
-    }, [categoriesStatus, dispatch]);
+    }, [categoriesStatus, ordersStatus, productsStatus, usersStatus, dispatch]);
 
     const logOut = () => {
         sessionStorage.clear();
@@ -117,13 +117,13 @@ const AdminHome = () => {
                                                 {category.Category}
                                             </h2>
                                             <button className="updateCategoryButton" onClick={() => handleSave(category._id)}>Update</button>
-                                            <button className="deleteCategoryButton" onClick={() => handleDeleteCategory(category._id)}>Delete</button>
+                                            <button className="deleteCategoryButton" onClick={() => handleDeleteCategory(category._id)}>Remove</button>
                                         </>
                                     ) : (
                                         <>
                                             <h2 onClick={() => handleEditCategory(category._id, category.Category)}>{category.Category}</h2>
                                             <button className="updateCategoryButton">Update</button>
-                                            <button className="deleteCategoryButton" onClick={() => handleDeleteCategory(category._id)}>Delete</button>
+                                            <button className="deleteCategoryButton" onClick={() => handleDeleteCategory(category._id)}>Remove</button>
                                         </>
 
                                     )}

@@ -3,6 +3,13 @@
     padding: 100px;
 }
 
+.wideSelect{
+    width: auto;
+    height: auto;
+    max-width: 100%;
+
+
+}
 
 .headerProductsAdmin{
     text-align: center;
@@ -37,6 +44,7 @@
     border-radius: 10px;
     display: flex;
     justify-content: center;
+    overflow: visible;
 }
 
 .productInformationContainer input{

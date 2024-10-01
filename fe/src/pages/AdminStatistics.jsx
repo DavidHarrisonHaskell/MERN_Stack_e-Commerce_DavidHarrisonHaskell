@@ -4,13 +4,16 @@ import { Pie, Bar } from 'react-chartjs-2';
 import { useEffect, useState } from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement, elements } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from "../actions";
 import './AdminStatistics.css';
+
 
 
 ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels, CategoryScale, LinearScale, elements);
 
 const AdminStatistics = () => {
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const [chartData, setChartData] = useState({
         labels: [],
@@ -65,6 +68,7 @@ const AdminStatistics = () => {
 
     const logOut = () => {
         sessionStorage.clear();
+        dispatch(logout());
         navigate('/login');
     }
 

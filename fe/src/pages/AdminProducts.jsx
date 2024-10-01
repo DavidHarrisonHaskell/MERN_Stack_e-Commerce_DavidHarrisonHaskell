@@ -1,20 +1,37 @@
 import Navbar from "../components/Navbar";
 import { useNavigate } from 'react-router-dom';
-import { fetchOrders } from '../slices/ordersSlice.jsx';
-import { fetchProducts } from "../slices/productsSlice.jsx";
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Button from 'react-bootstrap/Button';
 import './AdminProducts.css';
+import { logout } from "../actions/index.jsx";
 import DynamicTable from "../components/DynamicTable.jsx";
-
+import categoriesSlice from "../slices/categoriesSlice.jsx";
 
 const AdminProducts = () => {
-
+    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const orders = useSelector(state => state.orders.items);
     const products = useSelector(state => state.products.items);
+    const categories = useSelector(state => state.categories.items);
+
+    const [selectedCategories, setSelectedCategories] = useState({});
+
+    useEffect(() => {
+        const initialSelectedCategories = {};
+        products.forEach(product => {
+            initialSelectedCategories[product._id] = product.CategoryID;
+        });
+        setSelectedCategories(initialSelectedCategories);
+    }, [products]);
+
+    const handleCategoryChange = (productId, newCategoryId) => {
+        setSelectedCategories({
+            ...selectedCategories,
+            [productId]: newCategoryId
+        });
+    }
 
     const getProductsInformation = () => {
         const productsInformation = products.map(product => {
@@ -22,6 +39,7 @@ const AdminProducts = () => {
                 "Product ID": product._id,
                 "Title": product.Title,
                 "Category": product.Category,
+                "CategoryID": product.CategoryID,
                 "Description": product.Description,
                 "Price": product.Price,
                 "Link to pic": product["Link to pic"],
@@ -49,6 +67,7 @@ const AdminProducts = () => {
 
     const logOut = () => {
         sessionStorage.clear();
+        dispatch(logout());
         navigate('/login');
     }
 
@@ -77,7 +96,21 @@ const AdminProducts = () => {
                     <div className="productInformationContainer" key={index}>
                         <div className="leftSideContainerProductAdmin">
                             <span><b>Title: </b><input value={productInformation.Title} readOnly /></span><br /><br />
-                            <span><b>Category: </b><input value={productInformation.Category} readOnly /></span><br /><br />
+                            <span><b>Category: </b></span><br />
+                            <select
+                                className="wideSelect"
+                                value={selectedCategories[productInformation._id]}
+                                onChange={(e) => handleCategoryChange(productInformation._id, e.target.value)}
+
+                            >
+                                <option value={productInformation.CategoryID}>{productInformation.Category}</option>
+                                {categories
+                                    .filter(category => category._id !== productInformation.CategoryID)
+                                    .map(category => (
+                                        <option key={category._id} value={category._id}>{category.Category}</option>
+                                    ))}
+                            </select>
+                            <br />
                             <b>Description: </b><br /><textarea className="AdminDescriptionProduct" value={productInformation.Description} readOnly></textarea><br />
                             <Button variant="success">Save</Button>
                         </div>

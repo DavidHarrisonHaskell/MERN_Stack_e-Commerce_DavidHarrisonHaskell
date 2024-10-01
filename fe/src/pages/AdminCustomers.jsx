@@ -1,19 +1,19 @@
 import Navbar from "../components/Navbar";
 import { useNavigate } from 'react-router-dom';
-import { fetchOrders } from '../slices/ordersSlice.jsx';
-import { fetchUsers } from "../slices/usersSlice.jsx";
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import DynamicTable from "../components/DynamicTable.jsx";
 import Button from "react-bootstrap/Button";
+import { logout } from '../actions/index.jsx';
 import './AdminCustomers.css';
 
 const AdminCustomers = () => {
+    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const orders = useSelector(state => state.orders.items)
-    let users = useSelector(state => state.users.items);
-    users = users.filter(user => user.admin === false)
+    const users = useSelector(state => state.users.items);
+    const nonAdminUsers = users.filter(user => user.admin === false)
 
     const getUsersInformation = () => { // function works perfectly
 
@@ -25,7 +25,7 @@ const AdminCustomers = () => {
 
             return `${day.padStart(2, '0')}/${month}/${year}`;
         }
-        const allUsersInformation = users.map(user => {
+        const usersInformation = nonAdminUsers.map(user => {
             let userInformation = {
                 "User ID": user._id,
                 "First Name": user["First Name"],
@@ -48,7 +48,7 @@ const AdminCustomers = () => {
             userInformation["Products Bought"] = productsBought;
             return userInformation;
         })
-        return allUsersInformation;
+        return usersInformation;
     }
 
 
@@ -76,6 +76,7 @@ const AdminCustomers = () => {
 
     const logOut = () => {
         sessionStorage.clear();
+        dispatch(logout());
         navigate('/login');
     }
 
