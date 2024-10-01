@@ -24,7 +24,7 @@
     justify-content: center;
     border: none;
     /* height: auto; */
-    max-height: 700px;
+    max-height: auto;
     width: auto;
     max-width: 800px;
     margin: 20px auto;

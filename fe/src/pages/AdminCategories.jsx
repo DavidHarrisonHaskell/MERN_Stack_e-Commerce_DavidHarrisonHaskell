@@ -1,7 +1,7 @@
 import Navbar from '../components/Navbar.jsx';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { fetchCategories } from '../slices/categoriesSlice.jsx';
+import { fetchCategories, updateCategory, addCategory, deleteCategory } from '../slices/categoriesSlice.jsx';
 import { fetchOrders } from '../slices/ordersSlice.jsx';
 import { fetchProducts } from '../slices/productsSlice.jsx';
 import { fetchUsers } from '../slices/usersSlice.jsx';
@@ -71,11 +71,19 @@ const AdminHome = () => {
         // console.log("updatedCategoryName", updatedCategoryName);
     };
 
-    // const handleAddNewCategory = () => {
-    //     dispatch(addCategory({ Category: newCategoryName }));
-    //     setNewCategoryName('');
-    //     console.log("New category added", newCategoryName);
-    // }
+    const handleAddNewCategory = () => {
+        dispatch(addCategory({ Category: newCategoryName }));
+        setNewCategoryName('');
+        console.log("New category added", newCategoryName);
+    }
+
+
+    const handleDeleteCategory = (categoryID) => {
+        dispatch(deleteCategory({ id: categoryID }));
+        setEditingCategory(null);
+        console.log("Category deleted", categoryID);
+    }
+
 
     return (
         <>
@@ -100,22 +108,22 @@ const AdminHome = () => {
                                     {editingCategory === category._id ? (
                                         <>
                                             <h2
-                                            contentEditable
-                                            suppressContentEditableWarning
-                                            // onBlur={() => handleSave(category._id)}
-                                            onInput={handleChange}
-                                            className="categoryNameAdmin"
+                                                contentEditable
+                                                suppressContentEditableWarning
+                                                // onBlur={() => handleSave(category._id)}
+                                                onInput={handleChange}
+                                                className="categoryNameAdmin"
                                             >
-                                                {category.Category} 
+                                                {category.Category}
                                             </h2>
                                             <button className="updateCategoryButton" onClick={() => handleSave(category._id)}>Update</button>
-                                            <button className="deleteCategoryButton">Delete</button>
+                                            <button className="deleteCategoryButton" onClick={() => handleDeleteCategory(category._id)}>Delete</button>
                                         </>
                                     ) : (
                                         <>
-                                            <h2 onClick={() => handleEditCategory(category._id,category.Category)}>{category.Category}</h2>
+                                            <h2 onClick={() => handleEditCategory(category._id, category.Category)}>{category.Category}</h2>
                                             <button className="updateCategoryButton">Update</button>
-                                            <button className="deleteCategoryButton">Delete</button>
+                                            <button className="deleteCategoryButton" onClick={() => handleDeleteCategory(category._id)}>Delete</button>
                                         </>
 
                                     )}
@@ -130,7 +138,7 @@ const AdminHome = () => {
                                     value={newCategoryName}
                                     onChange={(e) => setNewCategoryName(e.target.value)}
                                 />
-                                <button className="newCategoryButtonAdmin">Add</button>
+                                <button className="newCategoryButtonAdmin" onClick={handleAddNewCategory}>Add</button>
                             </div>
                         </div>
                     </>

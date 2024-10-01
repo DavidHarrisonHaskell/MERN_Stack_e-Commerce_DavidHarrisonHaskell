@@ -1,5 +1,5 @@
 import { takeLatest, put, call } from 'redux-saga/effects';
-import { LOGOUT, CLEAR_STATE } from '../actions/actions';
+import { LOGOUT } from '../actions/actions';
 import { persistor } from '../store/store';
 import { clearState } from '../actions/index';
 
