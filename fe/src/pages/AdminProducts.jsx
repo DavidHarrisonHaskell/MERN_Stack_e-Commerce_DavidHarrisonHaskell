@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Button';
 import './AdminProducts.css';
 import { logout } from "../actions/index.jsx";
 import DynamicTable from "../components/DynamicTable.jsx";
-import categoriesSlice from "../slices/categoriesSlice.jsx";
+import { updateProduct } from "../slices/productsSlice.jsx";
 
 const AdminProducts = () => {
     const dispatch = useDispatch();
@@ -21,7 +21,7 @@ const AdminProducts = () => {
     useEffect(() => {
         const initialSelectedCategories = {};
         products.forEach(product => {
-            initialSelectedCategories[product._id] = product.CategoryID;
+            initialSelectedCategories[product._id] = product.CategoryID || '';
         });
         setSelectedCategories(initialSelectedCategories);
     }, [products]);
@@ -32,6 +32,23 @@ const AdminProducts = () => {
             [productId]: newCategoryId
         });
     }
+
+
+    const handleSave = (productID) => {
+        console.log("selectedCategories", selectedCategories);
+        console.log("productID", productID);
+        console.log("selectedCategory", categories.find(category => category._id === selectedCategories[productID]).Category);
+        console.log("SelectedCategoryID", selectedCategories[productID]);
+        const product = products.find(product => product._id === productID);
+        const updatedProduct = {
+            ...product,
+            CategoryID: selectedCategories[productID],
+            Category: categories.find(category => category._id === selectedCategories[productID])?.Category
+        }
+        console.log("updatedProduct", updatedProduct);
+        dispatch(updateProduct(updatedProduct));
+    }
+
 
     const getProductsInformation = () => {
         const productsInformation = products.map(product => {
@@ -75,9 +92,9 @@ const AdminProducts = () => {
     const getProductInformationForTable = (productInformation) => {
         let boughtBy = productInformation["Bought By"];
         const data = boughtBy.map(product => {
-            console.log("product", product);
-            console.log("boughtBy", boughtBy);
-            console.log("User First Name", product["User First Name"], "Quantity", product["Quantity"], "Order Date", product["Order Date"]);
+            // console.log("product", product);
+            // console.log("boughtBy", boughtBy);
+            // console.log("User First Name", product["User First Name"], "Quantity", product["Quantity"], "Order Date", product["Order Date"]);
             return {
                 "User First Name": product["User First Name"],
                 "Quantity": product["Quantity"],
@@ -95,12 +112,12 @@ const AdminProducts = () => {
                 {getProductsInformation().map((productInformation, index) => (
                     <div className="productInformationContainer" key={index}>
                         <div className="leftSideContainerProductAdmin">
-                            <span><b>Title: </b><input value={productInformation.Title} readOnly /></span><br /><br />
+                            <span><b>Title: </b><input value={productInformation.Title || ''} readOnly /></span><br /><br />
                             <span><b>Category: </b></span><br />
                             <select
                                 className="wideSelect"
-                                value={selectedCategories[productInformation._id]}
-                                onChange={(e) => handleCategoryChange(productInformation._id, e.target.value)}
+                                value={selectedCategories[productInformation["Product ID"]] || ''} 
+                                onChange={(e) => handleCategoryChange(productInformation["Product ID"], e.target.value)}
 
                             >
                                 <option value={productInformation.CategoryID}>{productInformation.Category}</option>
@@ -112,11 +129,11 @@ const AdminProducts = () => {
                             </select>
                             <br />
                             <b>Description: </b><br /><textarea className="AdminDescriptionProduct" value={productInformation.Description} readOnly></textarea><br />
-                            <Button variant="success">Save</Button>
+                            <Button variant="success" onClick={() => handleSave(productInformation["Product ID"])}>Save</Button>
                         </div>
                         <div>
-                            <span><b>Price: </b><input value={productInformation.Price} readOnly /></span><br /><br />
-                            <span><b>Link to pic: </b><input value={productInformation["Link to pic"]} readOnly /></span><br /><br />
+                            <span><b>Price: </b><input value={productInformation.Price || ''} readOnly /></span><br /><br />
+                            <span><b>Link to pic: </b><input value={productInformation["Link to pic"] || ''} readOnly /></span><br /><br />
                             <div>Bought By:</div>
                             <div className="dynamicTableContainerProducts">
                                 <DynamicTable
