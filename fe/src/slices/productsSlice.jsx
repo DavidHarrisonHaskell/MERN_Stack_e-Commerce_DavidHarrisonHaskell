@@ -23,6 +23,8 @@ export const fetchProducts = () => async dispatch => {
     }
 }
 
+
+
 export const updateProduct = (product) => async dispatch => {
     const { _id: id } = product
     dispatch(updateProductStart({ id })) // This will set the status to 'loading'
