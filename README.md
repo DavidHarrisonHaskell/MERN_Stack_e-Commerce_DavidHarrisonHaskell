@@ -4,6 +4,7 @@
 
 ## Backend with Node.JS
 By utilizing Node.JS, I established a server using express. The server performs CRUD operations with the MongoDB database and is able to send information to the frontend.
+
 ## File hierarchy for backend
 The index file receives incoming requests from the client and directs the requests to the controllers folder. The various controllers utilize the services files to perform various operations. The services files use various repository files which utilize mongoose models to access the MongoDB database.
 
