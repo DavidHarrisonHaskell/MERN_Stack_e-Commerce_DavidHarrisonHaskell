@@ -73,9 +73,14 @@ const productsSlice = createSlice({ //
                 updateProductSuccess: (state, action) => {
                     state.status = 'succeeded' // This will set the status to 'succeeded'
                     state.items = state.items.map(item => {
-                        if (item.id === action.payload.id) {
+                        if (item._id === action.payload._id) {
+                            console.log("item.id", item.id, "action.payload.id", action.payload.id) 
+                            console.log("equal item", item)
+                            console.log("equal action.payload", action.payload)
                             return action.payload
                         }
+                        console.log("not equal item", item)
+                        console.log("not equal action.payload", action.payload)
                         return item
                     })
                 },

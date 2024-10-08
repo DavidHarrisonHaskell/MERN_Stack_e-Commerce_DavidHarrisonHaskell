@@ -115,7 +115,7 @@ Router.put('/users/:id', verifyAdmin, async (req, res) => { // This is a route t
     const RegistrationDate = req.body["Registration Date"];
     const allowOthersToSeeMyOrders = req.body.allowOthersToSeeMyOrders;
     try {
-        let body = {}       
+        let body = {}
         // Check if the user entered the field and add it to the body object
         FirstName ? body["First Name"] = FirstName : null;
         LastName ? body["Last Name"] = LastName : null;
@@ -199,14 +199,14 @@ Router.put('/products/:id', verifyAdmin, async (req, res) => { // This is a rout
     const Price = req.body.Price;
     const LinkToPic = req.body["Link to pic"];
     try {
-        const body = {};        
+        const body = {};
         // Check if the user entered the field and add it to the body object
-        Title ? body.Title = Title : null;
-        Category ? body.Category = Category : null;
-        CategoryID ? body.CategoryID = CategoryID : null;
-        Description ? body.Description = Description : null;
-        Price ? body.Price = Price : null;
-        LinkToPic ? body["Link to pic"] = LinkToPic : null;
+        Title ? body.Title = Title : body.Title = "";
+        Category ? body.Category = Category : body.Category = "";
+        CategoryID ? body.CategoryID = CategoryID : body.CategoryID = "";
+        Description ? body.Description = Description : body.Description = "";
+        Price ? body.Price = Price : body.Price = "";
+        LinkToPic ? body["Link to pic"] = LinkToPic : body["Link to pic"] = "";
 
         const updatedProduct = await adminService.updateProductService(id, body);
         return res.json({ success: true, message: 'Product updated successfully', product: updatedProduct });
@@ -319,7 +319,7 @@ Router.delete('/:id/orders', verifyAdmin, async (req, res) => {
 // statistics route
 
 // A route for getting statistics information regarding the total number of products sold
- Router.get('/statistics/total-products-sold', verifyAdmin, async (req, res) => {
+Router.get('/statistics/total-products-sold', verifyAdmin, async (req, res) => {
     try {
         const statistics = await adminService.getStatisticsTotalProductsSoldService();
         return res.json(statistics);
