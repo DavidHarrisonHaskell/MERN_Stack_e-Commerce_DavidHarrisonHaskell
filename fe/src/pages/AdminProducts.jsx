@@ -7,7 +7,17 @@ import './AdminProducts.css';
 import { logout } from "../actions/index.jsx";
 import DynamicTable from "../components/DynamicTable.jsx";
 import { updateProduct } from "../slices/productsSlice.jsx";
-
+/* TODO: Add the ability to update the Bought By section
+    - When the user clicks the save button, check if any orders were changed
+    If any orders were changed, update the orders in the database
+    If no orders were changed, do nothing
+    - Add a state for all orders
+    - Make a dropdown for Names of other users in the database
+    - choosing that user will change the user ID of the purchaser of that order and 
+    then all of the orders will be updated accordingly
+    - Make a select option for choosing a different order date
+    - Make the quantity of the product editable but don't allow 0, negative numbers or non-numeric values
+*/
 const AdminProducts = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
