@@ -25,6 +25,7 @@ const AdminProducts = () => {
     const orders = useSelector(state => state.orders.items);
     const products = useSelector(state => state.products.items);
     const categories = useSelector(state => state.categories.items);
+    const users = useSelector(state => state.users.items);
 
     const [selectedCategories, setSelectedCategories] = useState({});
     const [titles, setTitles] = useState({});
@@ -46,15 +47,15 @@ const AdminProducts = () => {
             initialLinks[product._id] = product["Link to pic"] || '';
             initialPrices[product._id] = product.Price || '';
         });
-            setTitles(initialTitles);
-            setDescriptions(initialDescriptions);
-            setLinks(initialLinks);
-            setPrices(initialPrices);
-            setSelectedCategories(initialSelectedCategories);
-            console.log("titles", titles, "descriptions", descriptions, "links", links, "prices", prices);
-        }, [products]);
+        setTitles(initialTitles);
+        setDescriptions(initialDescriptions);
+        setLinks(initialLinks);
+        setPrices(initialPrices);
+        setSelectedCategories(initialSelectedCategories);
+        // console.log("titles", titles, "descriptions", descriptions, "links", links, "prices", prices);
+    }, [products]);
 
-    
+
     const handleCategoryChange = (productId, newCategoryId) => {
         setSelectedCategories({
             ...selectedCategories,
@@ -116,6 +117,91 @@ const AdminProducts = () => {
     }
 
 
+    const handleDynamicTableSave = (row, rowIndex, updatedRow) => {
+        console.log("row", row);
+        /* example: {User ID: '66e9800b0294e30b517f218b', User Full Name: 'Joseph Cooper', 
+        ProductID: '66e954700294e30b517f2182', Product Title: 'Watch', Quantity: 4, 
+        User Full Name: "Joseph Cooper", User ID: "66e9800b0294e30b517f218b"}
+        */
+        console.log("rowIndex", rowIndex);
+        /* example: 0 */
+        console.log("updatedRow", updatedRow);
+        /* example 1: {User Full Name: 'Joseph Cooper', Quantity: 4, Order Date: '2024-09-19'}
+           example 2: {User Full Name: 'Joseph Cooper'}
+           Note: it doesn't have to have all of the fields, it can have only one field
+        */
+        // TODO: Update the orders in the database
+        /*
+        First, find the order that has the same ._id as the row["Order ID"]
+        Then, within order.Orders, find the product that has the same ProductID as the row.ProductID
+        Make a variable that uses the spread operator to initialize the order.Orders
+        Then, find the product that has the same ProductID as the row.ProductID
+        Then, update the product that has the same ProductID as the row.ProductID with the updatedRow
+        Then, dispatch the updateOrder action with the updated order
+
+        */
+        const originalOrderToUpdate = orders.find(order => order._id === row["Order ID"]);
+        let flagToCheckIfChangeOccurred = false;
+        let orderToUpdate = { ...originalOrderToUpdate };
+        console.log("originalOrderToUpdate", originalOrderToUpdate);
+        // Update the User ID and User First Name if Necessary
+        if ("User Full Name" in updatedRow && updatedRow["User Full Name"] !== row["User ID"]) {
+            const user = users.find(user => user._id === updatedRow["User Full Name"]);
+            orderToUpdate = {
+                ...orderToUpdate,
+                UserID: updatedRow["User Full Name"],
+                "User First Name": user["First Name"]
+            }
+            flagToCheckIfChangeOccurred = true;
+        }
+        // Update the Order Date if Necessary
+        if ("Order Date" in updatedRow && updatedRow["Order Date"] !== row["Order Date"]) {
+            console.log("updatedRow.Order Date", updatedRow["Order Date"]);
+            orderToUpdate = {
+                ...orderToUpdate,
+                "Order Date": updatedRow["Order Date"]
+            }
+            flagToCheckIfChangeOccurred = true;
+        }
+        // Update the Quantity if Necessary
+        const updatedOrders = orderToUpdate.Orders.map(product => {
+            if (product.ProductID === row.ProductID) {
+                if (updatedRow.Quantity && updatedRow.Quantity !== row.Quantity) {
+                    flagToCheckIfChangeOccurred = true;
+                }
+                return {
+                    ...product,
+                    Quantity: updatedRow.Quantity || product.Quantity,
+                };
+            }
+            return product;
+        });
+
+        orderToUpdate = {
+            ...orderToUpdate,
+            Orders: updatedOrders
+        }
+        // Check if the orders were updated
+        if (flagToCheckIfChangeOccurred === false) {
+            console.log("The orders were not updated");
+            return; // Do nothing if the orders were not updated
+            // TODO: finish the code
+        }
+        //TODO: finish the code
+        // Update the orders if they were updated
+        console.log("A change occurred in the orders");
+        console.log("orderToUpdate", orderToUpdate);
+        // dispatch(updateOrder(updatedOrder));
+    }
+
+    const formatDate = (date) => {
+        const orderDate = new Date(date);
+        const day = String(orderDate.getDate());
+        const month = String(orderDate.getMonth() + 1);
+        const year = orderDate.getFullYear();
+        return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+    }
+
     const getProductsInformation = () => {
         const productsInformation = products.map(product => {
             let productInformation = {
@@ -133,13 +219,15 @@ const AdminProducts = () => {
             );
             productOrders = productOrders.map(order => {
                 let the_product_bought = order.Orders.find(orderProduct => orderProduct.ProductID == product._id)
+                let user = users.find(user => user._id === order.UserID)
                 return {
                     "User ID": order.UserID,
-                    "User First Name": order["User First Name"],
+                    "User Full Name": `${user["First Name"]} ${user["Last Name"]}`,
                     "ProductID": the_product_bought.ProductID,
                     "Product Title": the_product_bought["Product Title"],
                     "Quantity": the_product_bought.Quantity,
-                    "Order Date": order["Order Date"]
+                    "Order Date": formatDate(order["Order Date"]),
+                    "Order ID": order._id
                 }
             })
             productInformation["Bought By"] = productOrders;
@@ -157,18 +245,10 @@ const AdminProducts = () => {
 
     const getProductInformationForTable = (productInformation) => {
         let boughtBy = productInformation["Bought By"];
-        const data = boughtBy.map(product => {
-            // console.log("product", product);
-            // console.log("boughtBy", boughtBy);
-            // console.log("User First Name", product["User First Name"], "Quantity", product["Quantity"], "Order Date", product["Order Date"]);
-            return {
-                "User First Name": product["User First Name"],
-                "Quantity": product["Quantity"],
-                "Order Date": product["Order Date"]
-            }
-        })
+        const data = boughtBy.map(product => product);
         return data;
     }
+
 
     return (
         <>
@@ -219,17 +299,23 @@ const AdminProducts = () => {
                                     onChange={(e) => handleInputChange(productInformation["Product ID"], "Link", e.target.value)}
                                 />
                             </span><br /><br />
-                            <div>Bought By:</div>
+                            <div><b>Bought By:</b></div>
                             <div className="dynamicTableContainerProducts">
-                                <DynamicTable
-                                    source="AdminProducts"
-                                    columns={[
-                                        { key: "User First Name", label: "User First Name" },
-                                        { key: "Quantity", label: "Quantity" },
-                                        { key: "Order Date", label: "Order Date" }
-                                    ]}
-                                    data={getProductInformationForTable(productInformation)}
-                                />
+                                <>
+                                    <DynamicTable
+                                        source="AdminProducts"
+                                        columns={[
+                                            { key: "User Full Name", label: "User Full Name" },
+                                            { key: "Quantity", label: "Quantity" },
+                                            { key: "Order Date", label: "Order Date" }
+                                        ]}
+                                        data={getProductInformationForTable(productInformation)}
+                                        onSave={handleDynamicTableSave}
+                                        users={users}
+                                    />
+                                    {/* {console.log("productInformation", productInformation)} */}
+                                    {/* {console.log("getProductInformationForTable(productInformation)", getProductInformationForTable(productInformation))} */}
+                                </>
                             </div>
                         </div>
                     </div>
