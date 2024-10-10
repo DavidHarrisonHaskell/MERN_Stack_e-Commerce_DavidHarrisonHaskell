@@ -7,6 +7,9 @@ import './AdminProducts.css';
 import { logout } from "../actions/index.jsx";
 import DynamicTable from "../components/DynamicTable.jsx";
 import { updateProduct } from "../slices/productsSlice.jsx";
+import { updateOrder } from "../slices/ordersSlice.jsx";
+
+
 /* TODO: Add the ability to update the Bought By section
     - When the user clicks the save button, check if any orders were changed
     If any orders were changed, update the orders in the database
@@ -27,11 +30,19 @@ const AdminProducts = () => {
     const categories = useSelector(state => state.categories.items);
     const users = useSelector(state => state.users.items);
 
+    const [addNewProductFlag, setAddNewProductFlag] = useState(false);
     const [selectedCategories, setSelectedCategories] = useState({});
     const [titles, setTitles] = useState({});
     const [descriptions, setDescriptions] = useState({});
     const [links, setLinks] = useState({});
     const [prices, setPrices] = useState({});
+
+    const [newCategory, setNewCategory] = useState('');
+    const [newTitle, setNewTitle] = useState('');
+    const [newDescription, setNewDescription] = useState('');
+    const [newLink, setNewLink] = useState('');
+    const [newPrice, setNewPrice] = useState(0);
+
 
     useEffect(() => {
         const initialSelectedCategories = {};
@@ -185,10 +196,11 @@ const AdminProducts = () => {
         if (flagToCheckIfChangeOccurred === false) {
             console.log("The orders were not updated");
             return; // Do nothing if the orders were not updated
-            // TODO: finish the code
         }
-        //TODO: finish the code
+
         // Update the orders if they were updated
+        //dispatch to the redux state
+        dispatch(updateOrder(orderToUpdate));
         console.log("A change occurred in the orders");
         console.log("orderToUpdate", orderToUpdate);
         // dispatch(updateOrder(updatedOrder));
@@ -249,6 +261,9 @@ const AdminProducts = () => {
         return data;
     }
 
+    const addNewProduct = () => {
+        return
+    }
 
     return (
         <>
@@ -256,72 +271,142 @@ const AdminProducts = () => {
             <div className="adminProductsComponent">
                 <h1 className='headerProductsAdmin'><b>Products</b></h1>
                 {getProductsInformation().map((productInformation, index) => (
-                    <div className="productInformationContainer" key={index}>
-                        <div className="leftSideContainerProductAdmin">
-                            <span><b>Title: </b>
-                                <input
-                                    value={titles[productInformation["Product ID"]] || ''}
-                                    onChange={(e) => handleInputChange(productInformation["Product ID"], "Title", e.target.value)}
-                                />
-                            </span><br /><br />
-                            <span><b>Category: </b></span><br />
-                            <select
-                                className="wideSelect"
-                                value={selectedCategories[productInformation["Product ID"]] || ''}
-                                onChange={(e) => handleCategoryChange(productInformation["Product ID"], e.target.value)}
-                            >
-                                <option value={productInformation.CategoryID}>{productInformation.Category}</option>
-                                {categories
-                                    .filter(category => category._id !== productInformation.CategoryID)
-                                    .map(category => (
-                                        <option key={category._id} value={category._id}>{category.Category}</option>
-                                    ))}
-                            </select>
-                            <br />
-                            <b>Description: </b><br />
-                            <textarea
-                                className="AdminDescriptionProduct"
-                                value={descriptions[productInformation["Product ID"]] || ''}
-                                onChange={(e) => handleInputChange(productInformation["Product ID"], "Description", e.target.value)}
-                            ></textarea><br />
-                            <Button variant="success" onClick={() => handleSave(productInformation["Product ID"])}>Save</Button>
-                        </div>
-                        <div>
-                            <span><b>Price: </b>
-                                <input
-                                    type="number"
-                                    value={prices[productInformation["Product ID"]] || ''}
-                                    onChange={(e) => handleInputChange(productInformation["Product ID"], "Price", e.target.value)}
-                                /></span><br /><br />
-                            <span><b>Link to pic: </b>
-                                <input
-                                    value={links[productInformation["Product ID"]] || ''}
-                                    onChange={(e) => handleInputChange(productInformation["Product ID"], "Link", e.target.value)}
-                                />
-                            </span><br /><br />
-                            <div><b>Bought By:</b></div>
-                            <div className="dynamicTableContainerProducts">
-                                <>
-                                    <DynamicTable
-                                        source="AdminProducts"
-                                        columns={[
-                                            { key: "User Full Name", label: "User Full Name" },
-                                            { key: "Quantity", label: "Quantity" },
-                                            { key: "Order Date", label: "Order Date" }
-                                        ]}
-                                        data={getProductInformationForTable(productInformation)}
-                                        onSave={handleDynamicTableSave}
-                                        users={users}
+                    <div key={index}>
+                        <div className="productInformationContainer">
+                            <div className="leftSideContainerProductAdmin">
+                                <span><b>Title: </b>
+                                    <input
+                                        value={titles[productInformation["Product ID"]] || ''}
+                                        onChange={(e) => handleInputChange(productInformation["Product ID"], "Title", e.target.value)}
                                     />
-                                    {/* {console.log("productInformation", productInformation)} */}
-                                    {/* {console.log("getProductInformationForTable(productInformation)", getProductInformationForTable(productInformation))} */}
-                                </>
+                                </span><br /><br />
+                                <span><b>Category: </b></span><br />
+                                <select
+                                    className="wideSelect"
+                                    value={selectedCategories[productInformation["Product ID"]] || ''}
+                                    onChange={(e) => handleCategoryChange(productInformation["Product ID"], e.target.value)}
+                                >
+                                    <option value={productInformation.CategoryID}>{productInformation.Category}</option>
+                                    {categories
+                                        .filter(category => category._id !== productInformation.CategoryID)
+                                        .map(category => (
+                                            <option key={category._id} value={category._id}>{category.Category}</option>
+                                        ))}
+                                </select>
+                                <br />
+                                <b>Description: </b><br />
+                                <textarea
+                                    className="AdminDescriptionProduct"
+                                    value={descriptions[productInformation["Product ID"]] || ''}
+                                    onChange={(e) => handleInputChange(productInformation["Product ID"], "Description", e.target.value)}
+                                ></textarea><br />
+                                <Button variant="success" onClick={() => handleSave(productInformation["Product ID"])}>Save</Button>
+                            </div>
+                            <div>
+                                <span><b>Price: </b>
+                                    <input
+                                        type="number"
+                                        value={prices[productInformation["Product ID"]] || ''}
+                                        onChange={(e) => handleInputChange(productInformation["Product ID"], "Price", e.target.value)}
+                                    /></span><br /><br />
+                                <span><b>Link to pic: </b>
+                                    <input
+                                        value={links[productInformation["Product ID"]] || ''}
+                                        onChange={(e) => handleInputChange(productInformation["Product ID"], "Link", e.target.value)}
+                                    />
+                                </span><br /><br />
+                                <div><b>Bought By:</b></div>
+                                <div className="dynamicTableContainerProducts">
+                                    <>
+                                        <DynamicTable
+                                            source="AdminProducts"
+                                            columns={[
+                                                { key: "User Full Name", label: "User Full Name" },
+                                                { key: "Quantity", label: "Quantity" },
+                                                { key: "Order Date", label: "Order Date" }
+                                            ]}
+                                            data={getProductInformationForTable(productInformation)}
+                                            onSave={handleDynamicTableSave}
+                                            users={users}
+                                        />
+                                        {/* {console.log("productInformation", productInformation)} */}
+                                        {/* {console.log("getProductInformationForTable(productInformation)", getProductInformationForTable(productInformation))} */}
+                                    </>
+                                </div>
                             </div>
                         </div>
+                        {addNewProductFlag ? ( // TODO: finish the code to add a new Product
+                            <div className="productInformationContainer">
+                                <div className="leftSideContainerProductAdmin">
+                                    <span><b>Title: </b>
+                                        <input
+                                            value={titles[productInformation["Product ID"]] || ''}
+                                            onChange={(e) => handleInputChange(productInformation["Product ID"], "Title", e.target.value)}
+                                        />
+                                    </span><br /><br />
+                                    <span><b>Category: </b></span><br />
+                                    <select
+                                        className="wideSelect"
+                                        value={selectedCategories[productInformation["Product ID"]] || ''}
+                                        onChange={(e) => handleCategoryChange(productInformation["Product ID"], e.target.value)}
+                                    >
+                                        <option value={productInformation.CategoryID}>{productInformation.Category}</option>
+                                        {categories
+                                            .filter(category => category._id !== productInformation.CategoryID)
+                                            .map(category => (
+                                                <option key={category._id} value={category._id}>{category.Category}</option>
+                                            ))}
+                                    </select>
+                                    <br />
+                                    <b>Description: </b><br />
+                                    <textarea
+                                        className="AdminDescriptionProduct"
+                                        value={descriptions[productInformation["Product ID"]] || ''}
+                                        onChange={(e) => handleInputChange(productInformation["Product ID"], "Description", e.target.value)}
+                                    ></textarea><br />
+                                    <Button variant="success" onClick={() => handleSave(productInformation["Product ID"])}>Save</Button>
+                                </div>
+                                <div>
+                                    <span><b>Price: </b>
+                                        <input
+                                            type="number"
+                                            value={prices[productInformation["Product ID"]] || ''}
+                                            onChange={(e) => handleInputChange(productInformation["Product ID"], "Price", e.target.value)}
+                                        /></span><br /><br />
+                                    <span><b>Link to pic: </b>
+                                        <input
+                                            value={links[productInformation["Product ID"]] || ''}
+                                            onChange={(e) => handleInputChange(productInformation["Product ID"], "Link", e.target.value)}
+                                        />
+                                    </span><br /><br />
+                                    <div><b>Bought By:</b></div>
+                                    <div className="dynamicTableContainerProducts">
+                                        <>
+                                            <DynamicTable
+                                                source="AdminProducts"
+                                                columns={[
+                                                    { key: "User Full Name", label: "User Full Name" },
+                                                    { key: "Quantity", label: "Quantity" },
+                                                    { key: "Order Date", label: "Order Date" }
+                                                ]}
+                                                data={getProductInformationForTable(productInformation)}
+                                                onSave={handleDynamicTableSave}
+                                                users={users}
+                                            />
+                                            {/* {console.log("productInformation", productInformation)} */}
+                                            {/* {console.log("getProductInformationForTable(productInformation)", getProductInformationForTable(productInformation))} */}
+                                        </>
+                                    </div>
+                                </div>
+                            </div>
+                        ) : null}
                     </div>
                 ))}
+                <br />
+                <Button variant="primary" onClick={() => setAddNewProductFlag(!addNewProductFlag)}>Add New</Button>
+                <br /><br />
+                <Button variant="secondary" onClick={logOut}>Log Out</Button>
             </div>
-            <Button variant="secondary" onClick={logOut}>Log Out</Button>
         </>
     );
 }
