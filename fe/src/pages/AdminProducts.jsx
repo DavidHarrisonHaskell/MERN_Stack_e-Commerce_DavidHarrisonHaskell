@@ -10,7 +10,7 @@ import { updateProduct } from "../slices/productsSlice.jsx";
 import { updateOrder } from "../slices/ordersSlice.jsx";
 
 
-/* TODO: Add the ability to update the Bought By section
+/* Add the ability to update the Bought By section
     - When the user clicks the save button, check if any orders were changed
     If any orders were changed, update the orders in the database
     If no orders were changed, do nothing
@@ -141,7 +141,7 @@ const AdminProducts = () => {
            example 2: {User Full Name: 'Joseph Cooper'}
            Note: it doesn't have to have all of the fields, it can have only one field
         */
-        // TODO: Update the orders in the database
+
         /*
         First, find the order that has the same ._id as the row["Order ID"]
         Then, within order.Orders, find the product that has the same ProductID as the row.ProductID
