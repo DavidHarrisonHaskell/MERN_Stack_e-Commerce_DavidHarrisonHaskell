@@ -6,11 +6,11 @@ import Button from 'react-bootstrap/Button';
 import './AdminProducts.css';
 import { logout } from "../actions/index.jsx";
 import DynamicTable from "../components/DynamicTable.jsx";
-import { updateProduct } from "../slices/productsSlice.jsx";
+import { updateProduct, addProduct } from "../slices/productsSlice.jsx";
 import { updateOrder } from "../slices/ordersSlice.jsx";
 
 
-/* Add the ability to update the Bought By section
+/* Add the ability to update the Bought By sectio n
     - When the user clicks the save button, check if any orders were changed
     If any orders were changed, update the orders in the database
     If no orders were changed, do nothing
@@ -261,8 +261,37 @@ const AdminProducts = () => {
         return data;
     }
 
-    const addNewProduct = () => {
+    const handleSaveNewProduct = () => {
+        console.log("newCategory", newCategory);
+        console.log("newTitle", newTitle);
+        console.log("newDescription", newDescription);
+        console.log("newLink", newLink);
+        console.log("newPrice", newPrice);
+        if(newCategory === '' || newTitle === '' || newDescription === '' || newLink === '' || newPrice === 0){
+            alert("Please fill all the fields");
+            return;
+        }
+        const newProduct = {
+            Title: newTitle,
+            Description: newDescription,
+            "Link to pic": newLink,
+            Price: newPrice,
+            CategoryID: newCategory,
+            Category: categories.find(category => category._id === newCategory).Category
+        }
+        console.log("newProduct", newProduct);
+        dispatch(addProduct(newProduct)); //TODO: Fix this function
         return
+    }
+
+    const handleAddNewProduct = () => {
+        setAddNewProductFlag(!addNewProductFlag);
+        //clear certain fields after adding a new product
+        setNewCategory('');
+        setNewTitle('');
+        setNewDescription('');
+        setNewLink('');
+        setNewPrice(0);
     }
 
     return (
@@ -335,75 +364,58 @@ const AdminProducts = () => {
                                 </div>
                             </div>
                         </div>
-                        {addNewProductFlag ? ( // TODO: finish the code to add a new Product
-                            <div className="productInformationContainer">
-                                <div className="leftSideContainerProductAdmin">
-                                    <span><b>Title: </b>
-                                        <input
-                                            value={titles[productInformation["Product ID"]] || ''}
-                                            onChange={(e) => handleInputChange(productInformation["Product ID"], "Title", e.target.value)}
-                                        />
-                                    </span><br /><br />
-                                    <span><b>Category: </b></span><br />
-                                    <select
-                                        className="wideSelect"
-                                        value={selectedCategories[productInformation["Product ID"]] || ''}
-                                        onChange={(e) => handleCategoryChange(productInformation["Product ID"], e.target.value)}
-                                    >
-                                        <option value={productInformation.CategoryID}>{productInformation.Category}</option>
-                                        {categories
-                                            .filter(category => category._id !== productInformation.CategoryID)
-                                            .map(category => (
-                                                <option key={category._id} value={category._id}>{category.Category}</option>
-                                            ))}
-                                    </select>
-                                    <br />
-                                    <b>Description: </b><br />
-                                    <textarea
-                                        className="AdminDescriptionProduct"
-                                        value={descriptions[productInformation["Product ID"]] || ''}
-                                        onChange={(e) => handleInputChange(productInformation["Product ID"], "Description", e.target.value)}
-                                    ></textarea><br />
-                                    <Button variant="success" onClick={() => handleSave(productInformation["Product ID"])}>Save</Button>
-                                </div>
-                                <div>
-                                    <span><b>Price: </b>
-                                        <input
-                                            type="number"
-                                            value={prices[productInformation["Product ID"]] || ''}
-                                            onChange={(e) => handleInputChange(productInformation["Product ID"], "Price", e.target.value)}
-                                        /></span><br /><br />
-                                    <span><b>Link to pic: </b>
-                                        <input
-                                            value={links[productInformation["Product ID"]] || ''}
-                                            onChange={(e) => handleInputChange(productInformation["Product ID"], "Link", e.target.value)}
-                                        />
-                                    </span><br /><br />
-                                    <div><b>Bought By:</b></div>
-                                    <div className="dynamicTableContainerProducts">
-                                        <>
-                                            <DynamicTable
-                                                source="AdminProducts"
-                                                columns={[
-                                                    { key: "User Full Name", label: "User Full Name" },
-                                                    { key: "Quantity", label: "Quantity" },
-                                                    { key: "Order Date", label: "Order Date" }
-                                                ]}
-                                                data={getProductInformationForTable(productInformation)}
-                                                onSave={handleDynamicTableSave}
-                                                users={users}
-                                            />
-                                            {/* {console.log("productInformation", productInformation)} */}
-                                            {/* {console.log("getProductInformationForTable(productInformation)", getProductInformationForTable(productInformation))} */}
-                                        </>
-                                    </div>
-                                </div>
-                            </div>
-                        ) : null}
                     </div>
                 ))}
+
+                {addNewProductFlag ? (
+                    <div className="productInformationContainer">
+                        <div className="leftSideContainerProductAdmin">
+                            <span><b>Title: </b>
+                                <input
+                                    value={newTitle || ''}
+                                    onChange={(e) => setNewTitle(e.target.value)}
+                                />
+                            </span><br /><br />
+                            <span><b>Category: </b></span><br />
+                            <select
+                                className="wideSelect"
+                                value={newCategory || ''}
+                                onChange={(e) => setNewCategory(e.target.value)}
+                            >
+                                <option value="" disabled>Select a category</option>
+                                {categories
+                                    .map(category => (
+                                        <option key={category._id} value={category._id}>{category.Category}</option>
+                                    ))}
+                            </select>
+                            <br />
+                            <b>Description: </b><br />
+                            <textarea
+                                className="AdminDescriptionProduct"
+                                value={newDescription || ''}
+                                onChange={(e) => setNewDescription(e.target.value)}
+                            ></textarea><br />
+                            {/*TODO: finish the add product section */}
+                            <Button variant="success" onClick={handleSaveNewProduct}>Save</Button>
+                        </div>
+                        <div>
+                            <span><b>Price: </b>
+                                <input
+                                    type="number"
+                                    value={newPrice || ''}
+                                    onChange={(e) => setNewPrice(e.target.value)}
+                                /></span><br /><br />
+                            <span><b>Link to pic: </b>
+                                <input
+                                    value={newLink || ''}
+                                    onChange={(e) => setNewLink(e.target.value)}
+                                />
+                            </span><br /><br />
+                        </div>
+                    </div>
+                ) : null}
                 <br />
-                <Button variant="primary" onClick={() => setAddNewProductFlag(!addNewProductFlag)}>Add New</Button>
+                <Button variant="primary" onClick={handleAddNewProduct}>Add New</Button>
                 <br /><br />
                 <Button variant="secondary" onClick={logOut}>Log Out</Button>
             </div>

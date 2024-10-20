@@ -171,6 +171,7 @@ Router.post('/products', verifyAdmin, async (req, res) => { // This is a route t
         const Description = req.body.Description;
         const Price = req.body.Price;
         const LinkToPic = req.body["Link to pic"];
+        console.log("req.body", req.body)
         if (!Title || !Category || !Description || !Price || !LinkToPic) {
             return res.status(400).json({ error: 'Please enter all fields' });
         }
