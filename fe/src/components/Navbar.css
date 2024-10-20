@@ -6,7 +6,7 @@
     text-align: center;
 }
 
-.adminHeader {
+.adminHeader, .userHeader {
     display: flex;
     flex-direction: row;
     align-items: center;

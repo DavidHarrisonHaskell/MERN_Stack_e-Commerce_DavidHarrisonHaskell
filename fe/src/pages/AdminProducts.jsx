@@ -281,6 +281,7 @@ const AdminProducts = () => {
         }
         console.log("newProduct", newProduct);
         dispatch(addProduct(newProduct)); //TODO: Fix this function
+        setAddNewProductFlag(!addNewProductFlag);
         return
     }
 
