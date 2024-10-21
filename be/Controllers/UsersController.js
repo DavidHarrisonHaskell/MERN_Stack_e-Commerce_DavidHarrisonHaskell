@@ -42,7 +42,8 @@ Router.put('/:id', verifyUser, async (req, res) => {
 Router.get('/:id/orders', verifyUser, async (req, res) => {
     try {
         const userOrders = await UsersService.getUserOrdersService(req.params.id);
-        return res.json(userOrders);
+        console.log('userOrders: ', userOrders);
+        return res.json({ success: true, userOrders: userOrders, hello: true });
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
@@ -60,7 +61,7 @@ Router.get('/:id/orders', verifyUser, async (req, res) => {
 Router.get('/:id/products', verifyUser, async (req, res) => {
     try {
         const products = await UsersService.getProductsService(req.params.id);
-        return res.json(products);
+        return res.json({ success: true, products: products });
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }

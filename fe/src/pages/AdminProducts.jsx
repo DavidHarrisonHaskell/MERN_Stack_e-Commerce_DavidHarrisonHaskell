@@ -280,7 +280,7 @@ const AdminProducts = () => {
             Category: categories.find(category => category._id === newCategory).Category
         }
         console.log("newProduct", newProduct);
-        dispatch(addProduct(newProduct)); //TODO: Fix this function
+        dispatch(addProduct(newProduct));
         setAddNewProductFlag(!addNewProductFlag);
         return
     }
@@ -396,7 +396,6 @@ const AdminProducts = () => {
                                 value={newDescription || ''}
                                 onChange={(e) => setNewDescription(e.target.value)}
                             ></textarea><br />
-                            {/*TODO: finish the add product section */}
                             <Button variant="success" onClick={handleSaveNewProduct}>Save</Button>
                         </div>
                         <div>

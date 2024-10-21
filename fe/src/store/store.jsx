@@ -6,6 +6,8 @@ import categoriesReducer from '../slices/categoriesSlice';
 import ordersReducer from '../slices/ordersSlice';
 import productsReducer from '../slices/productsSlice';
 import usersReducer from '../slices/usersSlice';
+import userProductsSlice from '../slices/userProductsSlice';
+import userOrdersSlice from '../slices/userOrdersSlice';
 import rootSaga from '../sagas/index';
 import { CLEAR_STATE } from '../actions/actions';
 
@@ -19,7 +21,9 @@ const appReducer = combineReducers({
     categories: categoriesReducer,
     orders: ordersReducer,
     products: productsReducer,
-    users: usersReducer
+    users: usersReducer,
+    userProducts: userProductsSlice,
+    userOrders: userOrdersSlice
 });
 
 const rootReducer = (state, action) => {

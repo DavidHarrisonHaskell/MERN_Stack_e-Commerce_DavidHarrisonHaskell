@@ -48,7 +48,7 @@ export const updateProduct = (product) => async dispatch => {
     }
 }
 
-export const addProduct = ( newProduct ) => async dispatch => { //TODO: Finish this function
+export const addProduct = ( newProduct ) => async dispatch => {
     dispatch(addProductStart()) // This will set the status to 'loading'
     try {
         const token = sessionStorage.getItem('token'); 
