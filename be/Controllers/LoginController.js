@@ -22,7 +22,7 @@ Router.post('/login', async (req, res) => {
         }
         const secretKey = user.admin ? process.env.ADMIN_SECRET_KEY : process.env.USER_SECRET_KEY; // Use different secret keys for admin and user
         const token = jwt.sign({ user }, secretKey);
-        return res.json({ success: true, token: token, admin: user.admin, id: user._id });
+        return res.json({ success: true, token: token, admin: user.admin, id: user._id, firstName: user["First Name"] });
     } catch (error) {
         return res.status(500).json({ success: false, message: error.message });
     }

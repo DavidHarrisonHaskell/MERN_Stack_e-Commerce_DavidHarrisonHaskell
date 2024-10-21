@@ -12,9 +12,9 @@ require('dotenv').config();
 Router.get('/:id', verifyUser, async (req, res) => {
     try {
         const user = await UsersService.getUserInformationService(req.params.id);
-        return res.json(user);
+        return res.json({ success: true, user: user });
     } catch (error) {
-        return res.status(500).json({ message: error.message });
+        return res.status(500).json({ success: false, message: error.message });
     }
 });
 

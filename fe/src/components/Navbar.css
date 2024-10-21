@@ -22,11 +22,13 @@
     gap: 3rem;
 }
 
-.navbar-links a {
+.navbar-links a, .navbar-links span {
     text-decoration: none;
     color: black;
     font-size: 1.5rem;
 }
+
+
 
 .navbar-links a.active {
     text-decoration: underline;

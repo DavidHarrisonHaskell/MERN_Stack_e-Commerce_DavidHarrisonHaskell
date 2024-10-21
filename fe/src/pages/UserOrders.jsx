@@ -1,12 +1,15 @@
 import Navbar from '../components/Navbar'
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../actions/index';
+import { Button } from 'react-bootstrap';
 
 
 const UserOrders = () => {
     const userOrders = useSelector(state => state.userOrders.items);
-
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    
     const logOut = () => {
         sessionStorage.clear();
         dispatch(logout());
@@ -31,7 +34,8 @@ const UserOrders = () => {
                             </div>
                         ))}
                     </div>
-                ))}
+                ))}<br />
+                {/* <Button onClick={logOut}>Log Out</Button> */}
             </div>
         </>
     )

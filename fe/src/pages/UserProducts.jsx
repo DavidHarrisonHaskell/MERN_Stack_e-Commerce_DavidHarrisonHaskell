@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUserProducts } from '../slices/userProductsSlice';
 import { fetchUserOrders } from '../slices/userOrdersSlice';
+import { fetchUserAccount } from '../slices/userAccountSlice';
 import { logout } from '../actions/index';
 import { Button } from 'react-bootstrap';
 import { useNavigate } from "react-router-dom";
@@ -21,19 +22,30 @@ const UserProducts = () => {
     const userOrdersStatus = useSelector(state => state.userOrders.status);
     const userOrdersError = useSelector(state => state.userOrders.error);
 
+    const userAccountStatus = useSelector(state => state.userAccount.status);
+    const userAccountError = useSelector(state => state.userAccount.error);
 
     useEffect(() => {
         // TODO: get user Id from sessionStorage and pass it to fetchUserProducts
-        const id = sessionStorage.getItem('id').toString();
+        const id = sessionStorage.getItem('id')?.toString();
         console.log("sessionstorage id: ", id)
 
         if (userProductsStatus === 'idle') {
-            dispatch(fetchUserProducts({ id }));
+            try {
+                dispatch(fetchUserProducts({ id }));
+            } catch (error) { null }
         }
         if (userOrdersStatus === 'idle') {
-            dispatch(fetchUserOrders({ id }));
+            try {
+                dispatch(fetchUserOrders({ id }));
+            } catch (error) { null }
         }
-    }, [userProductsStatus, userOrdersStatus, dispatch]);
+        if (userAccountStatus === 'idle') {
+            try {
+                dispatch(fetchUserAccount({ id }));
+            } catch (error) { null }
+        }
+    }, [userProductsStatus, userOrdersStatus, userAccountStatus, dispatch]);
 
     const logOut = () => {
         sessionStorage.clear();
@@ -51,6 +63,8 @@ const UserProducts = () => {
                 {userProductsStatus === 'succeeded' && userProducts.length === 0 && <h1>No products found</h1>}
                 {userOrdersStatus === 'loading' && <h1>Loading...</h1>}
                 {userOrdersStatus === 'failed' && <p>{console.log(userOrdersError)}</p>}
+                {userAccountStatus === 'loading' && <h1>Loading...</h1>}
+                {userAccountStatus === 'failed' && <p>{console.log(userAccountError)}</p>}
                 {userProductsStatus === 'succeeded' && userProducts.map(product => (
                     <div key={product.ProductID}>
                         <h1>{product["Product Title"]}</h1>
@@ -61,7 +75,7 @@ const UserProducts = () => {
                         <p>{product["Number of Units Sold"]}</p>
                     </div>
                 ))}
-                <Button onClick={logOut}>Logout</Button>
+                {/* <Button onClick={logOut}>Logout</Button> */}
             </div>
         </>
     )

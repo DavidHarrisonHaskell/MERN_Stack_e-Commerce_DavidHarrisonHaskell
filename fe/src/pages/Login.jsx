@@ -24,6 +24,7 @@ const Login = () => {
                 sessionStorage.setItem('successfulLogin', response.data.success)
                 sessionStorage.setItem('token', response.data.token)
                 sessionStorage.setItem('admin', response.data.admin)
+                sessionStorage.setItem('firstName', response.data.firstName)
                 sessionStorage.setItem('id', response.data.id)
                 response.data.admin ? navigate('/admin'): navigate('/user')
             } else {

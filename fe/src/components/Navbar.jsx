@@ -1,14 +1,30 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import './Navbar.css';
+import { logout } from '../actions/index';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
+
+
 const Navbar = () => {
     const admin = sessionStorage.getItem('admin');
     const location = useLocation();
     const [activeLink, setActiveLink] = useState(location.pathname);
 
+
+
     useEffect(() => {
         setActiveLink(location.pathname);
     }, [location.pathname]);
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const logOut = () => {
+        sessionStorage.clear();
+        dispatch(logout());
+        navigate('/login');
+    }
 
     return (
         <>
@@ -56,7 +72,7 @@ const Navbar = () => {
                 </>
             ) : (
                 <>
-                    <div className='userHeader'><h1>Hi, User</h1></div>
+                    <div className='userHeader'><h1>{`Hi, ${sessionStorage.getItem('firstName')}`}</h1></div>
 
                     <div className="navbar">
                         <div className='navbar-links'>
@@ -85,13 +101,13 @@ const Navbar = () => {
                                 Account
                             </Link>
 
-                            <Link
-                                to={"/user/log-out"}
-                                className={activeLink === '/user/log-out' ? 'active' : ''}
-                                onClick={() => setActiveLink('/user/log-out')}
+                            <span
+                                onClick={logOut}
+                                className={activeLink === '/login' ? 'active' : ''}
+                                style={{ cursor: 'pointer' }}
                             >
                                 Log Out
-                            </Link>
+                            </span>
 
                         </div>
                     </div>
