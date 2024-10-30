@@ -6,6 +6,7 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearSca
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from "../actions";
+import Button from "react-bootstrap/Button";
 import './AdminStatistics.css';
 
 
@@ -250,7 +251,13 @@ const AdminStatistics = () => {
                                             anchor: 'center',
                                             align: 'center',
                                             formatter: (value, context) => {
-                                                return context.chart.data.labels[context.dataIndex] + ': ' + value
+                                                if (value !== 0) {
+                                                    return (
+                                                        context.chart.data.labels[context.dataIndex] + ': ' + value
+                                                    );
+                                                } else {
+                                                    return '';
+                                                }
                                             },
                                             color: '#000000', // Changed to black hard color
                                             font: {
@@ -277,7 +284,7 @@ const AdminStatistics = () => {
                 )}
                 <br /><br />
                 <h2 className="productsBoughtHeader">Products Quantity Per Customer</h2>
-                <label htmlFor="users"><b>Sort by Customer</b></label><br />
+                <label htmlFor="users"><b>Sort by Customer</b></label><br /><br />
                 <select id="users" name="users" onChange={handleUserChange}>
                     <option value="">Select a user:</option>
                     {allUsers.map(user => (
@@ -285,47 +292,49 @@ const AdminStatistics = () => {
                     ))}
                 </select>
                 <div className="barChartStatistics">
-                    {barChartData.labels.length > 0 && barChartData.datasets[0].data.length  > 0  ? (
-                        <Bar
-                            data={barChartData}
-                            options={{
-                                plugins: {
-                                    legend: {
-                                        display: false,
-                                        position: 'top',
-                                    },
-                                    datalabels: {
-                                        anchor: 'center',
-                                        align: 'center',
-                                        formatter: (value, context) => {
-                                            return value
+                    {barChartData.labels.length > 0 && barChartData.datasets[0].data.length > 0 ? (
+                        <>
+                            <Bar
+                                data={barChartData}
+                                options={{
+                                    plugins: {
+                                        legend: {
+                                            display: false,
+                                            position: 'top',
                                         },
-                                        color: '#000000', // Changed to black hard color
-                                        font: {
-                                            weight: 'bold',
-                                            size: 16
-                                        }
+                                        datalabels: {
+                                            anchor: 'center',
+                                            align: 'center',
+                                            formatter: (value, context) => {
+                                                return value
+                                            },
+                                            color: '#000000', // Changed to black hard color
+                                            font: {
+                                                weight: 'bold',
+                                                size: 16
+                                            }
+                                        },
                                     },
-                                },
-                                elements: {
-                                    bar: {
-                                        borderWidth: 1,
-                                        borderColor: '#000000', // Changed to black hard color
-                                        shadowOffsetX: 3,
-                                        shadowOffsetY: 3,
-                                        shadowBlur: 10,
-                                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                    elements: {
+                                        bar: {
+                                            borderWidth: 1,
+                                            borderColor: '#000000', // Changed to black hard color
+                                            shadowOffsetX: 3,
+                                            shadowOffsetY: 3,
+                                            shadowBlur: 10,
+                                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                        }
                                     }
-                                }
-                            }}
-                        />
+                                }}
+                            /><br />
+                        </>
                     ) : (
                         <div className="NoProductsBought">
-                            <h3>No products Bought</h3>
+                            <h3>No products Bought</h3><br />
                         </div>
                     )}
                 </div>
-                <button onClick={logOut}>Log Out</button>
+                <Button variant="secondary" onClick={logOut}>Log Out</Button>
             </div>
         </>
     );

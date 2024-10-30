@@ -31,6 +31,12 @@ const UserOrders = () => {
         return date_dd_mm_yyyy
     }
 
+    const getProductTitle = (productID) => {
+        const product = products.find(product => product._id == productID)
+        console.log("products", products)
+        console.log("ProductID", productID, typeof(productID), "product", product)
+        return product?.Title
+    }
     return (
         <>
             <Navbar /><br />
@@ -52,7 +58,7 @@ const UserOrders = () => {
                             {userOrders.map(order => (
                                 order.Orders.map(product => (
                                     <tr key={product._id}>
-                                        <td>{product["Product Title"]}</td>
+                                        <td>{getProductTitle(product.ProductID)}</td>
                                         <td>{product.Quantity}</td>
                                         {/*add total cost by adding the price of all products ordered*/}
                                         <td>{findPrice(product.ProductID, product.Quantity)}</td>

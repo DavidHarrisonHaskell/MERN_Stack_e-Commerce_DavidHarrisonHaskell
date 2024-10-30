@@ -169,17 +169,17 @@ Router.get('/products-information', verifyAdmin, async (req, res) => { // This i
 Router.post('/products', verifyAdmin, async (req, res) => { // This is a route that adds a new product if the user is an admin
     try {
         const Title = req.body.Title;
-        const Category = req.body.Category;
+        const CategoryID = req.body.CategoryID;
         const Description = req.body.Description;
         const Price = req.body.Price;
         const LinkToPic = req.body["Link to pic"];
         console.log("req.body", req.body)
-        if (!Title || !Category || !Description || !Price || !LinkToPic) {
+        if (!Title || !CategoryID || !Description || !Price || !LinkToPic) {
             return res.status(400).json({ error: 'Please enter all fields' });
         }
         const body = {
             Title: Title,
-            Category: Category,
+            CategoryID: CategoryID,
             Description: Description,
             Price: Price,
             "Link to pic": LinkToPic,

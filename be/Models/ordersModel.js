@@ -4,9 +4,6 @@ const ProductInformationSchema = new mongoose.Schema({
     "ProductID": {
         type: String,
     },
-    "Product Title": {
-        type: String,
-    },
     "Quantity": {
         type: Number,
     }

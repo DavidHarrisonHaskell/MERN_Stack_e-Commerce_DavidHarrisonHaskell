@@ -11,6 +11,7 @@ const AdminCustomers = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    const products = useSelector(state => state.products.items);
     const orders = useSelector(state => state.orders.items)
     const users = useSelector(state => state.users.items);
     const nonAdminUsers = users.filter(user => user.admin === false)
@@ -40,7 +41,7 @@ const AdminCustomers = () => {
             let productsBought = userOrders.flatMap(order =>
                 order.Orders.map(product => ({
                     "ProductID": product.ProductID,
-                    "ProductTitle": product["Product Title"],
+                    "ProductTitle": products.find(p => p._id === product.ProductID).Title,
                     "Quantity": product.Quantity,
                     "OrderDate": order["Order Date"]
                 }))

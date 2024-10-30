@@ -2,6 +2,7 @@ import './NewUserRegistration.css';
 import { useState } from "react";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
 
 const NewUserRegistration = () => {
     const [FirstName, setFirstName] = useState('');
@@ -56,8 +57,8 @@ const NewUserRegistration = () => {
                     onChange={() => setAllowOthersToSeeMyOrders(!allowOthersToSeeMyOrders)}
                 ></input>&nbsp;
                 Allow others to see my orders</label>
-            <button className='LoginButtonNewUserRegistration' onClick={register}>Create</button>
-
+            <button className='LoginButtonNewUserRegistration' onClick={register}>Create</button><br /><br />
+            <Button variant="secondary" onClick={() => navigate('/')}>Cancel</Button>
         </div>
     );
 }
