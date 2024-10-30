@@ -4,9 +4,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchUserProducts } from '../slices/userProductsSlice';
 import { fetchUserOrders } from '../slices/userOrdersSlice';
 import { fetchUserAccount } from '../slices/userAccountSlice';
+import { fetchProducts } from '../slices/productsSlice';
 import { logout } from '../actions/index';
 import { Button } from 'react-bootstrap';
 import { useNavigate } from "react-router-dom";
+import './UserProducts.css';
 
 
 
@@ -25,6 +27,9 @@ const UserProducts = () => {
     const userAccountStatus = useSelector(state => state.userAccount.status);
     const userAccountError = useSelector(state => state.userAccount.error);
 
+    const productsStatus = useSelector(state => state.products.status);
+    const productsError = useSelector(state => state.products.error);
+
     useEffect(() => {
         // TODO: get user Id from sessionStorage and pass it to fetchUserProducts
         const id = sessionStorage.getItem('id')?.toString();
@@ -33,49 +38,81 @@ const UserProducts = () => {
         if (userProductsStatus === 'idle') {
             try {
                 dispatch(fetchUserProducts({ id }));
-            } catch (error) { null }
+            } catch (error) { console.log(error) }
         }
         if (userOrdersStatus === 'idle') {
             try {
                 dispatch(fetchUserOrders({ id }));
-            } catch (error) { null }
+            } catch (error) { console.log(error) }
         }
         if (userAccountStatus === 'idle') {
             try {
                 dispatch(fetchUserAccount({ id }));
-            } catch (error) { null }
+            } catch (error) { console.log(error) }
         }
-    }, [userProductsStatus, userOrdersStatus, userAccountStatus, dispatch]);
+        if (productsStatus === 'idle') {
+            try {
+                dispatch(fetchProducts());
+                console.log("success")
+            } catch (error) {
+                console.log(error)
+                console.log("unsuccessful")
+            }
+        }
+    }, [userProductsStatus, userOrdersStatus, userAccountStatus, productsStatus, dispatch]);
 
-    const logOut = () => {
-        sessionStorage.clear();
-        dispatch(logout());
-        navigate('/login');
+    const [isExpanded, setIsExpanded] = useState(false);
+    const toggleExpand = () => {
+        setIsExpanded(!isExpanded);
     }
-
 
     return (
         <>
             <Navbar /><br />
-            <div>
-                {userProductsStatus === 'loading' && <h1>Loading...</h1>}
-                {userProductsStatus === 'failed' && <p>{console.log(error)}</p>}
-                {userProductsStatus === 'succeeded' && userProducts.length === 0 && <h1>No products found</h1>}
-                {userOrdersStatus === 'loading' && <h1>Loading...</h1>}
-                {userOrdersStatus === 'failed' && <p>{console.log(userOrdersError)}</p>}
-                {userAccountStatus === 'loading' && <h1>Loading...</h1>}
-                {userAccountStatus === 'failed' && <p>{console.log(userAccountError)}</p>}
-                {userProductsStatus === 'succeeded' && userProducts.map(product => (
-                    <div key={product.ProductID}>
-                        <h1>{product["Product Title"]}</h1>
-                        <p>{product.Category}</p>
-                        <p>{product.Description}</p>
-                        <p>{product.Price}</p>
-                        <p>{product["Link to pic"]}</p>
-                        <p>{product["Number of Units Sold"]}</p>
+            <div className="userProductsContainer">
+                <div className="productsAndCart">
+                    <div className="productsContainer">
+                        {userProductsStatus === 'loading' && <h1>Loading...</h1>}
+                        {userProductsStatus === 'failed' && <p>{console.log(error)}</p>}
+                        {userProductsStatus === 'succeeded' && userProducts.length === 0 && <h1>No products found</h1>}
+                        {userOrdersStatus === 'loading' && <h1>Loading...</h1>}
+                        {userOrdersStatus === 'failed' && <p>{console.log(userOrdersError)}</p>}
+                        {userAccountStatus === 'loading' && <h1>Loading...</h1>}
+                        {userAccountStatus === 'failed' && <p>{console.log(userAccountError)}</p>}
+                        {productsStatus === 'loading' && <h1>Loading...</h1>}
+                        {productsStatus === 'failed' && <p>{console.log(productsError)}</p>}
+                        <div className="containerForEachProduct">
+                            {userProductsStatus === 'succeeded' && userProducts.map(product => (
+                                <div key={product.ProductID} className="userProducts">
+                                    <div style={{ width: '40%' }} >
+                                        <h1>{product["Product Title"]}</h1>
+                                        <p>{product.Category}</p>
+                                        <p>${product.Price}</p>
+                                        <p>{product.Description}</p>
+                                    </div>
+                                    <div style={{ width: '40%' }}>
+                                        <img src={product["Link to pic"]} width={200} height={200} alt="product pic" />
+                                    </div>
+                                    <div style={{ width: '20%' }}>
+                                        <p>Bought: {product["Number of Units Sold"]}</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
                     </div>
-                ))}
-                {/* <Button onClick={logOut}>Logout</Button> */}
+                    <Button onClick={toggleExpand}>
+                        {isExpanded ? <b>←</b> : <b>→</b>}
+                    </Button><br />
+                    {isExpanded && (
+                        <div>
+                            <input
+                                type="number"
+                                value={1}
+                            />
+                            <Button>Add to Cart</Button>
+                        </div>
+                    )}
+                </div>
             </div>
         </>
     )

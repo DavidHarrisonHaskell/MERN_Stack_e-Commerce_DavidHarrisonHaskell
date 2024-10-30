@@ -23,6 +23,23 @@ export const fetchUserAccount = ({ id }) => async dispatch => {
     }
 }
 
+export const updateUserAccount = ({ id, user }) => async dispatch => {
+    console.log("user: ", user, "id: ", id)
+    dispatch(fetchUserAccountStart())
+    try {
+        const token = sessionStorage.getItem('token');
+        const response = await axios.put(`http://127.0.0.1:8000/users/${id}`, user, {
+            headers: {
+                'token': token
+            }
+        });
+        console.log("response.data.userAccount: ", response.data.user)
+        dispatch(fetchUserAccountSuccess(response.data))
+    } catch (error) {
+        dispatch(fetchUserAccountFailure(error.message))
+    }
+}
+
 const userAccountSlice = createSlice({
     name: 'userAccount',
     initialState,
@@ -37,6 +54,17 @@ const userAccountSlice = createSlice({
         fetchUserAccountFailure(state, action) {
             state.status = 'failed';
             state.error = action.payload;
+        },
+        updateUserAccountStart(state) {
+            state.status = 'loading';
+        },
+        updateUserAccountSuccess(state, action) {
+            state.status = 'succeeded';
+            state.items = action.payload.user;
+        },
+        updateUserAccountFailure(state, action) {
+            state.status = 'failed';
+            state.error = action.payload;
         }
     }
 });
@@ -44,7 +72,10 @@ const userAccountSlice = createSlice({
 export const {
     fetchUserAccountStart,
     fetchUserAccountSuccess,
-    fetchUserAccountFailure
+    fetchUserAccountFailure,
+    updateUserAccountStart,
+    updateUserAccountSuccess,
+    updateUserAccountFailure
 } = userAccountSlice.actions;
 
 export default userAccountSlice.reducer;

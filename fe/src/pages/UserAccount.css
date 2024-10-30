@@ -1,0 +1,30 @@
+.userAccountWrapper{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 50px;
+    width: 100%;
+}
+
+.userAccount {
+    justify-content: center;
+    padding: 60px;
+    /* margin-top: 50px; */
+    border-radius: 10px;
+    border: black solid 1px;    
+    margin: 0 auto;
+}
+
+.userAccount input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: black solid 1px;
+    text-align: center;
+}
+
+.userAccount Button {
+    width: 100%;
+
+}

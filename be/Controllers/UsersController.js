@@ -30,6 +30,7 @@ Router.put('/:id', verifyUser, async (req, res) => {
             "Last Name": req.body["Last Name"],
             "Username": req.body.Username,
             "Password": req.body.Password,
+            "allowOthersToSeeMyOrders": req.body.allowOthersToSeeMyOrders
         };
         const updatedUser = await UsersService.updateUserService(id, body);
         return res.json({ success: true, message: 'User updated successfully', user: updatedUser });

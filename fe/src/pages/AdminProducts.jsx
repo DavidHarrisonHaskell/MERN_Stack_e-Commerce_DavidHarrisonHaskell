@@ -64,7 +64,7 @@ const AdminProducts = () => {
         setPrices(initialPrices);
         setSelectedCategories(initialSelectedCategories);
         // console.log("titles", titles, "descriptions", descriptions, "links", links, "prices", prices);
-    }, [products]);
+    }, [products, categories]);
 
 
     const handleCategoryChange = (productId, newCategoryId) => {
@@ -295,6 +295,14 @@ const AdminProducts = () => {
         setNewPrice(0);
     }
 
+    const findCategory = (categoryID) => {
+        let category = categories.find(category => category._id === categoryID);
+        console.log("category", category);
+        if (category) {
+            return category.Category;
+        }
+    }
+
     return (
         <>
             <Navbar /><br />
@@ -316,7 +324,7 @@ const AdminProducts = () => {
                                     value={selectedCategories[productInformation["Product ID"]] || ''}
                                     onChange={(e) => handleCategoryChange(productInformation["Product ID"], e.target.value)}
                                 >
-                                    <option value={productInformation.CategoryID}>{productInformation.Category}</option>
+                                    <option value={productInformation.CategoryID}>{findCategory(productInformation.CategoryID)}</option>
                                     {categories
                                         .filter(category => category._id !== productInformation.CategoryID)
                                         .map(category => (

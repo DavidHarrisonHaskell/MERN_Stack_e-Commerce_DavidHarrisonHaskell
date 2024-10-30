@@ -71,7 +71,7 @@ const DynamicTable = (props) => {
                                                 </tbody>
                                             </table>
                                         ) : ("No orders were made")
-                                    ) : (
+                                    ) : ( source === 'AdminProducts' && 
                                         editableRows[rowIndex] && editableRows[rowIndex][column.key] !== undefined ? (
                                             column.key === 'Quantity' ? (
                                                 <input
