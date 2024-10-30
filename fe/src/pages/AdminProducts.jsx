@@ -219,7 +219,6 @@ const AdminProducts = () => {
             let productInformation = {
                 "Product ID": product._id,
                 "Title": product.Title,
-                "Category": product.Category,
                 "CategoryID": product.CategoryID,
                 "Description": product.Description,
                 "Price": product.Price,
