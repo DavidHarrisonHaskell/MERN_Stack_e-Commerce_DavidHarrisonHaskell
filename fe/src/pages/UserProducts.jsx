@@ -89,6 +89,16 @@ const UserProducts = () => {
                                         <p>{product.Category}</p>
                                         <p>${product.Price}</p>
                                         <p>{product.Description}</p>
+                                        <div className="quantityControl">
+                                            <button>
+                                                +
+                                            </button>
+                                            <input type="number" defaultValue={0} />
+                                            <button>
+                                                -
+                                            </button>
+                                        </div>
+
                                     </div>
                                     <div style={{ width: '40%' }}>
                                         <img src={product["Link to pic"]} width={200} height={200} alt="product pic" />

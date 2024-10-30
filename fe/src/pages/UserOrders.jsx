@@ -21,7 +21,10 @@ const UserOrders = () => {
 
     const findPrice = (productID, quantity) => {
         const product = products.find(product => product._id === productID)
-        const price = product.Price
+        const price = product.Price //TODO: Add a field for "Price when Bought" in the Orders collection
+        // so that the price of the product at the time of purchase is stored
+        // and even if the Admin changes a product's price at a
+        // later date, the price of the product in the order remains the same
         return price * quantity
     }
 
