@@ -5,16 +5,28 @@ import { fetchUserProducts } from '../slices/userProductsSlice';
 import { fetchUserOrders } from '../slices/userOrdersSlice';
 import { fetchUserAccount } from '../slices/userAccountSlice';
 import { fetchProducts } from '../slices/productsSlice';
+import { addToCart, removeFromCart, setCartQuantity, initializeCart } from "../slices/userCartSlice";
 import { logout } from '../actions/index';
 import { Button } from 'react-bootstrap';
 import { useNavigate } from "react-router-dom";
 import './UserProducts.css';
-
+import axios from "axios";
 
 
 const UserProducts = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    //state to manage quantities
+    const [quantities, setQuantities] = useState({});
+
+    //handle quantity change
+    const handleQuantityChange = (productID, value) => {
+        setQuantities(prevquantities => ({
+            ...prevquantities,
+            [productID]: Math.max(0, (prevquantities[productID] || 0) + value)
+        }))
+    }
 
     // load all redux states
     const userProducts = useSelector(state => state.userProducts.items);
@@ -30,8 +42,9 @@ const UserProducts = () => {
     const productsStatus = useSelector(state => state.products.status);
     const productsError = useSelector(state => state.products.error);
 
+    const cartItems = useSelector(state => state.userCart.items);
+
     useEffect(() => {
-        // TODO: get user Id from sessionStorage and pass it to fetchUserProducts
         const id = sessionStorage.getItem('id')?.toString();
         console.log("sessionstorage id: ", id)
 
@@ -61,10 +74,30 @@ const UserProducts = () => {
         }
     }, [userProductsStatus, userOrdersStatus, userAccountStatus, productsStatus, dispatch]);
 
+
+    useEffect(() => {
+        if (userProductsStatus === 'succeeded' && Object.keys(cartItems).length === 0) {
+            console.log("checking 123")
+            let productsObject = {}
+            userProducts.forEach(product => {
+                productsObject[product.ProductID] = 0
+            })
+            console.log("productsObject: ", productsObject)
+            dispatch(initializeCart({ productsObject }))
+        }
+    }, [userProducts, dispatch]);
+
     const [isExpanded, setIsExpanded] = useState(false);
     const toggleExpand = () => {
         setIsExpanded(!isExpanded);
     }
+
+    const totalPrice = Object.keys(cartItems).reduce((total, productId) => {
+        const product = userProducts.find(product => product.ProductID === productId);
+        return total + (product.Price * cartItems[productId]);
+    }, 0)
+
+
 
     return (
         <>
@@ -90,11 +123,15 @@ const UserProducts = () => {
                                         <p>${product.Price}</p>
                                         <p>{product.Description}</p>
                                         <div className="quantityControl">
-                                            <button>
+                                            <button onClick={() => dispatch(addToCart({ productId: product.ProductID }))}>
                                                 +
                                             </button>
-                                            <input type="number" defaultValue={0} />
-                                            <button>
+                                            <input
+                                                type="number"
+                                                value={cartItems[product.ProductID] || 0}
+                                                readOnly
+                                            />
+                                            <button onClick={() => dispatch(removeFromCart({ productId: product.ProductID }))}>
                                                 -
                                             </button>
                                         </div>
@@ -115,17 +152,68 @@ const UserProducts = () => {
                     </Button><br />
                     {isExpanded && (
                         <div>
-                            <input
-                                type="number"
-                                value={1}
-                            />
-                            <Button>Add to Cart</Button>
+                            <br /><h2 className="cartHeader"><b>Cart</b></h2>
+                            {Object.keys(cartItems).filter(productId => cartItems[productId] > 0).map(productId => {
+                                const product = userProducts.find(product => product.ProductID === productId);
+                                return (
+                                    <div key={productId}>
+                                        <span className="productInCart">
+                                            {product["Product Title"]}
+                                            <label>&nbsp;-&nbsp;</label>
+                                            <button onClick={() => dispatch(removeFromCart({ productId: productId }))}>-</button>&nbsp;
+                                            {cartItems[productId]}&nbsp;
+                                            <button onClick={() => dispatch(addToCart({ productId: productId }))}> + </button>&nbsp;
+                                            <label>&nbsp;units - Total:&nbsp;${product.Price * cartItems[productId]}</label>&nbsp;
+                                            <button
+                                                className="deleteFromCart"
+                                                onClick={() => dispatch(setCartQuantity({ productId }))}
+                                            >
+                                                X
+                                            </button>
+                                        </span>
+                                    </div>
+                                )
+                            })}
+                            <div className="TotalContainerOuter">
+                                <div className="TotalContainerInner">
+                                    <div>
+                                        <h3>Total: ${totalPrice}</h3>
+                                    </div>
+                                    {totalPrice > 0 && (
+                                        <div>
+                                            <Button
+                                                className="Order"
+                                                variant="success"
+                                                onClick={checkout}
+                                            >
+                                                Order
+                                            </Button>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
                         </div>
                     )}
                 </div>
             </div>
         </>
     )
+}
+
+const checkout = async () => {
+    const id = sessionStorage.getItem('id')?.toString();
+    const token = sessionStorage.getItem('token');
+    let checkoutOrder = {}
+    try {
+        const response = await axios.post(`http://127.0.0.1:8000/users/${id}/orders`, checkoutOrder, {
+            headers: {
+                'token': token
+            }
+        });
+    } catch (error) {
+        alert("error: ", error)
+    }
+    //TODO: finish function
 }
 
 export default UserProducts

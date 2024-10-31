@@ -12,12 +12,15 @@
     height: 100%;
     /* height: 600px; */
 }
-.productsContainer{
+
+.productsContainer {
     max-height: 800px;
     overflow-y: auto;
     align-items: center;
     justify-content: center;
+    flex: 2;
 }
+
 .userProducts {
     width: 70%;
     margin: 10px;
@@ -30,18 +33,20 @@
     border-radius: 10px;
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
 }
-.containerForEachProduct{
+
+.containerForEachProduct {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     margin: 10px;
 }
-.userProducts div{
+
+.userProducts div {
     margin: 10px;
 }
 
-.quantityControl{
+.quantityControl {
     display: flex;
     flex-direction: row-reverse;
     align-items: center;
@@ -49,24 +54,77 @@
     margin: 10px;
     gap: 10px;
 }
-.quantityControl button{
+
+.quantityControl button {
     padding: 10px;
     align-items: center;
     justify-content: center;
     border-radius: 40%;
     border: black solid 1px;
-    background-color: lightgrey
-    
+    background-color: #d3d3d3;
+
 }
-.quantityControl input{
+
+.quantityControl input {
     width: 50px;
     padding: 10px;
     border-radius: 5px;
     border: black solid 1px;
     text-align: center;
 }
+
 .quantityControl input::-webkit-outer-spin-button,
 .quantityControl input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
+}
+
+.productInCart {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: left;
+    border: black solid 1px;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+    margin: 10px;
+}
+
+.cartHeader {
+    margin-left: 10px;
+}
+
+.deleteFromCart {
+    background-color: lightcoral;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.TotalContainerOuter{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    margin-left: 10px;
+}
+
+.TotalContainerInner{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 10px;
+}
+
+.Order{
+    padding: 5px 30px 5px 30px;
+    border-radius: 15px;
 }

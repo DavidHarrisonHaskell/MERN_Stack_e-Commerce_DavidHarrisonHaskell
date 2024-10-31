@@ -87,6 +87,9 @@ Router.get('/:id/products', verifyUser, async (req, res) => {
 // =>  "Orders": {
 //         type: [ProductInformationSchema],
 //     }
+
+
+// user route for posting an order to the database
 Router.post('/:id/orders', verifyUser, async (req, res) => {
     try {
         const id = req.params.id;
