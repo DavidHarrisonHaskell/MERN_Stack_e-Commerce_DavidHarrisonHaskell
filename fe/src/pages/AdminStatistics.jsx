@@ -172,9 +172,6 @@ const AdminStatistics = () => {
         return usersOrders;
     }
 
-
-    console.log("statisticsInformationUsersOrders", statisticsInformationUsersOrders());
-
     const handleUserChange = (e) => {
         setSelectedUser(e.target.value);
         const userOrders = statisticsInformationUsersOrders().find(user => user["User ID"] == e.target.value);
@@ -200,7 +197,6 @@ const AdminStatistics = () => {
                 ]
             });
         }
-        console.log("userOrders", userOrders);
     }
 
 

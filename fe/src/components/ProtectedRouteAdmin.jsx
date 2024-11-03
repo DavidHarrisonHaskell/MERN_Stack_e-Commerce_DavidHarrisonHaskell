@@ -10,7 +10,6 @@ const ProtectedRouteAdmin = ({ children }) => {
     if (successfulLogin && token && admin === 'true') {
         return children;
     } else if (successfulLogin && token && admin === 'false') {
-        console.log("User logged in but not an admin")
         return <Navigate to='/user' />
     } else {
         return <Navigate to='/' />

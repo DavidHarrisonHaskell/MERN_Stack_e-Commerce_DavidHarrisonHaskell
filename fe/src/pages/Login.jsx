@@ -15,12 +15,9 @@ const Login = () => {
                 Username: username,
                 Password: password
             })
-            console.log("response: ", response)
-            console.log("response.data: ", response.data)
             if (response.data.success) {
                 setUsername('')
                 setPassword('')
-                console.log("Login successful", "success: ", response.data.success, "token: ", response.data.token, "admin: ", response.data.admin)
                 sessionStorage.setItem('successfulLogin', response.data.success)
                 sessionStorage.setItem('token', response.data.token)
                 sessionStorage.setItem('admin', response.data.admin)
@@ -28,7 +25,6 @@ const Login = () => {
                 sessionStorage.setItem('id', response.data.id)
                 response.data.admin ? navigate('/admin'): navigate('/user')
             } else {
-                console.log("Login failed: ", "error: ", response.data.error, "success: ", response.data.success)
                 alert(response.data.error)
             }
         } catch (error) {

@@ -46,7 +46,6 @@ const UserProducts = () => {
 
     useEffect(() => {
         const id = sessionStorage.getItem('id')?.toString();
-        console.log("sessionstorage id: ", id)
 
         if (userProductsStatus === 'idle') {
             try {
@@ -77,12 +76,10 @@ const UserProducts = () => {
 
     useEffect(() => {
         if (userProductsStatus === 'succeeded' && Object.keys(cartItems).length === 0) {
-            console.log("checking 123")
             let productsObject = {}
             userProducts.forEach(product => {
                 productsObject[product.ProductID] = 0
             })
-            console.log("productsObject: ", productsObject)
             dispatch(initializeCart({ productsObject }))
         }
     }, [userProducts, dispatch]);
@@ -118,7 +115,6 @@ const UserProducts = () => {
                 "Price When Bought": the_product.Price
             }
         })
-        console.log("cartItemsForCheckout: ", cartItemsForCheckout, "productForCheckout: ", checkoutOrder)
         try {
             const response = await axios.post(`http://127.0.0.1:8000/users/${id}/orders`, checkoutOrder, {
                 headers: {
@@ -129,9 +125,6 @@ const UserProducts = () => {
         } catch (error) {
             alert("error: ", error, "message: ", error.message)
         }
-
-        //call the logOut function
-        //TODO: finish function
     }
 
     return (

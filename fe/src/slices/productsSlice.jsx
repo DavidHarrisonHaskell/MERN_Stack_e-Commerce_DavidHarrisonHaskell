@@ -28,7 +28,6 @@ export const fetchProducts = () => async dispatch => {
 export const updateProduct = (product) => async dispatch => {
     const { _id: id } = product
     dispatch(updateProductStart({ id })) // This will set the status to 'loading'
-    console.log("product", product)
     try {
         const token = sessionStorage.getItem('token');
         if (!token) {
@@ -39,8 +38,6 @@ export const updateProduct = (product) => async dispatch => {
                 'token': token
             }
         });
-        console.log("response", response)
-        console.log("response.data", response.data)
         dispatch(updateProductSuccess(response.data.product)) // This will set the status to 'succeeded'
     }
     catch (error) {
@@ -92,13 +89,8 @@ const productsSlice = createSlice({ //
                     state.status = 'succeeded' // This will set the status to 'succeeded'
                     state.items = state.items.map(item => {
                         if (item._id === action.payload._id) {
-                            console.log("item.id", item.id, "action.payload.id", action.payload.id) 
-                            console.log("equal item", item)
-                            console.log("equal action.payload", action.payload)
                             return action.payload
                         }
-                        console.log("not equal item", item)
-                        console.log("not equal action.payload", action.payload)
                         return item
                     })
                 },

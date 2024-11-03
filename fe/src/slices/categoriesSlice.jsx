@@ -93,7 +93,6 @@ const categoriesSlice = createSlice({
         },
         updateCategorySuccess: (state, action) => {
             state.status = 'succeeded'
-            console.log("action.payload.category", action.payload.category)
             state.items = state.items.map(category => {
                 if (category._id === action.payload.category._id) {
                     return action.payload.category

@@ -16,7 +16,6 @@ export const fetchUserProducts = ({ id }) => async dispatch => {
                 'token': token
             }
         });
-        console.log("response.data for userProducts: ", response.data)
         dispatch(fetchUserProductsSuccess(response.data))
     } catch (error) {
         dispatch(fetchUserProductsFailure(error.message))

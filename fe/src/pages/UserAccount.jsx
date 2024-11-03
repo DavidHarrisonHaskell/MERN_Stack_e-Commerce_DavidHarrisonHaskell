@@ -1,6 +1,5 @@
 import Navbar from "../components/Navbar"
 import { useSelector, useDispatch } from 'react-redux';
-import { logout } from '../actions/index';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "react-bootstrap";
 import './UserAccount.css';
@@ -38,7 +37,6 @@ const UserAccount = () => {
             "Password": editablePassword,
             "allowOthersToSeeMyOrders": editableAllowOthersToSeeMyOrders
         }
-        console.log("user: ", user)
         dispatch(updateUserAccount({ id, user }))
     }
 

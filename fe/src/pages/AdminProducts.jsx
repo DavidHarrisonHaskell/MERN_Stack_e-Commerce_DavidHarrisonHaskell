@@ -63,7 +63,6 @@ const AdminProducts = () => {
         setLinks(initialLinks);
         setPrices(initialPrices);
         setSelectedCategories(initialSelectedCategories);
-        // console.log("titles", titles, "descriptions", descriptions, "links", links, "prices", prices);
     }, [products, categories]);
 
 
@@ -108,12 +107,7 @@ const AdminProducts = () => {
 
 
     const handleSave = (productID) => {
-        // console.log("selectedCategories", selectedCategories);
-        // console.log("productID", productID);
-        // console.log("selectedCategory", categories.find(category => category._id === selectedCategories[productID]).Category);
-        // console.log("SelectedCategoryID", selectedCategories[productID]);
         const product = products.find(product => product._id === productID);
-        console.log("product link to pic", links[productID]);
         const updatedProduct = {
             ...product,
             Title: titles[productID] || '',
@@ -123,38 +117,14 @@ const AdminProducts = () => {
             CategoryID: selectedCategories[productID] || '',
             Category: categories.find(category => category._id === selectedCategories[productID])?.Category
         }
-        console.log("updatedProduct", updatedProduct);
         dispatch(updateProduct(updatedProduct));
     }
 
 
     const handleDynamicTableSave = (row, rowIndex, updatedRow) => {
-        console.log("row", row);
-        /* example: {User ID: '66e9800b0294e30b517f218b', User Full Name: 'Joseph Cooper', 
-        ProductID: '66e954700294e30b517f2182', Product Title: 'Watch', Quantity: 4, 
-        User Full Name: "Joseph Cooper", User ID: "66e9800b0294e30b517f218b"}
-        */
-        console.log("rowIndex", rowIndex);
-        /* example: 0 */
-        console.log("updatedRow", updatedRow);
-        /* example 1: {User Full Name: 'Joseph Cooper', Quantity: 4, Order Date: '2024-09-19'}
-           example 2: {User Full Name: 'Joseph Cooper'}
-           Note: it doesn't have to have all of the fields, it can have only one field
-        */
-
-        /*
-        First, find the order that has the same ._id as the row["Order ID"]
-        Then, within order.Orders, find the product that has the same ProductID as the row.ProductID
-        Make a variable that uses the spread operator to initialize the order.Orders
-        Then, find the product that has the same ProductID as the row.ProductID
-        Then, update the product that has the same ProductID as the row.ProductID with the updatedRow
-        Then, dispatch the updateOrder action with the updated order
-
-        */
         const originalOrderToUpdate = orders.find(order => order._id === row["Order ID"]);
         let flagToCheckIfChangeOccurred = false;
         let orderToUpdate = { ...originalOrderToUpdate };
-        console.log("originalOrderToUpdate", originalOrderToUpdate);
         // Update the User ID and User First Name if Necessary
         if ("User Full Name" in updatedRow && updatedRow["User Full Name"] !== row["User ID"]) {
             const user = users.find(user => user._id === updatedRow["User Full Name"]);
@@ -167,7 +137,6 @@ const AdminProducts = () => {
         }
         // Update the Order Date if Necessary
         if ("Order Date" in updatedRow && updatedRow["Order Date"] !== row["Order Date"]) {
-            console.log("updatedRow.Order Date", updatedRow["Order Date"]);
             orderToUpdate = {
                 ...orderToUpdate,
                 "Order Date": updatedRow["Order Date"]
@@ -194,16 +163,9 @@ const AdminProducts = () => {
         }
         // Check if the orders were updated
         if (flagToCheckIfChangeOccurred === false) {
-            console.log("The orders were not updated");
             return; // Do nothing if the orders were not updated
         }
-
-        // Update the orders if they were updated
-        //dispatch to the redux state
         dispatch(updateOrder(orderToUpdate));
-        console.log("A change occurred in the orders");
-        console.log("orderToUpdate", orderToUpdate);
-        // dispatch(updateOrder(updatedOrder));
     }
 
     const formatDate = (date) => {
@@ -261,12 +223,7 @@ const AdminProducts = () => {
     }
 
     const handleSaveNewProduct = () => {
-        console.log("newCategory", newCategory);
-        console.log("newTitle", newTitle);
-        console.log("newDescription", newDescription);
-        console.log("newLink", newLink);
-        console.log("newPrice", newPrice);
-        if(newCategory === '' || newTitle === '' || newDescription === '' || newLink === '' || newPrice === 0){
+        if (newCategory === '' || newTitle === '' || newDescription === '' || newLink === '' || newPrice === 0) {
             alert("Please fill all the fields");
             return;
         }
@@ -278,7 +235,6 @@ const AdminProducts = () => {
             CategoryID: newCategory,
             Category: categories.find(category => category._id === newCategory).Category
         }
-        console.log("newProduct", newProduct);
         dispatch(addProduct(newProduct));
         setAddNewProductFlag(!addNewProductFlag);
         return
@@ -296,7 +252,6 @@ const AdminProducts = () => {
 
     const findCategory = (categoryID) => {
         let category = categories.find(category => category._id === categoryID);
-        console.log("category", category);
         if (category) {
             return category.Category;
         }
@@ -366,8 +321,6 @@ const AdminProducts = () => {
                                             onSave={handleDynamicTableSave}
                                             users={users}
                                         />
-                                        {/* {console.log("productInformation", productInformation)} */}
-                                        {/* {console.log("getProductInformationForTable(productInformation)", getProductInformationForTable(productInformation))} */}
                                     </>
                                 </div>
                             </div>

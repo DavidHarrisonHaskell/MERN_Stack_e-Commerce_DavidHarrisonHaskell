@@ -16,15 +16,11 @@ export const fetchUserOrders = ({ id }) => async dispatch => {
                 'token': token
             }
         });
-        console.log("URL sent to the server for userOrders: ", `http://127.0.0.1:8000/users/${id}/orders`)
-        console.log("response.data for userOrders: ", response.data)
-        console.log("response.data.userOrders: ", response.data.userOrders)
         dispatch(fetchUserOrdersSuccess(response.data))
     } catch (error) {
         dispatch(fetchUserOrdersFailure(error.message))
     }
 }
-// TODO: add another function to update the user's orders
 const userOrdersSlice = createSlice({
     name: 'userOrders',
     initialState,

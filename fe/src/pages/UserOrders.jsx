@@ -12,9 +12,6 @@ const UserOrders = () => {
     const userOrders = useSelector(state => state.userOrders.items);
     const products = useSelector(state => state.products.items);
 
-    console.log("UserOrders: userOrders", userOrders)
-    console.log("UserOrders: products", products)
-
     const findPrice = (price, quantity) => {
         return price * quantity
     }
@@ -27,8 +24,6 @@ const UserOrders = () => {
 
     const getProductTitle = (productID) => {
         const product = products.find(product => product._id == productID)
-        console.log("products", products)
-        console.log("ProductID", productID, typeof(productID), "product", product)
         return product?.Title
     }
     return (

@@ -32,8 +32,6 @@ const AdminHome = () => {
     const [updatedCategoryName, setUpdatedCategoryName] = useState('');
     const [newCategoryName, setNewCategoryName] = useState('');
 
-    // console.log("AdminCategories: categories", categories, "categoriesStatus", categoriesStatus, "error", error);
-
     useEffect(() => {
         if (categoriesStatus === 'idle') {
             dispatch(fetchCategories());
@@ -63,25 +61,21 @@ const AdminHome = () => {
     const handleSave = (categoryId) => {
         dispatch(updateCategory({ id: categoryId, name: updatedCategoryName }));
         setEditingCategory(null);
-        console.log("Category updated", categoryId, updatedCategoryName);
     }
 
     const handleChange = (e) => {
         setUpdatedCategoryName(e.target.innerText);
-        // console.log("updatedCategoryName", updatedCategoryName);
     };
 
     const handleAddNewCategory = () => {
         dispatch(addCategory({ Category: newCategoryName }));
         setNewCategoryName('');
-        console.log("New category added", newCategoryName);
     }
 
 
     const handleDeleteCategory = (categoryID) => {
         dispatch(deleteCategory({ id: categoryID }));
         setEditingCategory(null);
-        console.log("Category deleted", categoryID);
     }
 
 
