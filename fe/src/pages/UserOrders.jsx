@@ -15,16 +15,7 @@ const UserOrders = () => {
     console.log("UserOrders: userOrders", userOrders)
     console.log("UserOrders: products", products)
 
-
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-
-    const findPrice = (productID, quantity) => {
-        const product = products.find(product => product._id === productID)
-        const price = product.Price //TODO: Add a field for "Price when Bought" in the Orders collection
-        // so that the price of the product at the time of purchase is stored
-        // and even if the Admin changes a product's price at a
-        // later date, the price of the product in the order remains the same
+    const findPrice = (price, quantity) => {
         return price * quantity
     }
 
@@ -64,7 +55,7 @@ const UserOrders = () => {
                                         <td>{getProductTitle(product.ProductID)}</td>
                                         <td>{product.Quantity}</td>
                                         {/*add total cost by adding the price of all products ordered*/}
-                                        <td>{findPrice(product.ProductID, product.Quantity)}</td>
+                                        <td>{findPrice(product["Price When Bought"], product.Quantity)}</td>
                                         <td>{formatOrder(order["Order Date"])}</td>
                                     </tr>
                                 ))

@@ -24,7 +24,7 @@ export const fetchUserOrders = ({ id }) => async dispatch => {
         dispatch(fetchUserOrdersFailure(error.message))
     }
 }
-
+// TODO: add another function to update the user's orders
 const userOrdersSlice = createSlice({
     name: 'userOrders',
     initialState,

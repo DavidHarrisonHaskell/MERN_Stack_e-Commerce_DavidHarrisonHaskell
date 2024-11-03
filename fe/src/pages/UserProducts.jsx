@@ -21,12 +21,12 @@ const UserProducts = () => {
     const [quantities, setQuantities] = useState({});
 
     //handle quantity change
-    const handleQuantityChange = (productID, value) => {
-        setQuantities(prevquantities => ({
-            ...prevquantities,
-            [productID]: Math.max(0, (prevquantities[productID] || 0) + value)
-        }))
-    }
+    // const handleQuantityChange = (productID, value) => {
+    //     setQuantities(prevquantities => ({
+    //         ...prevquantities,
+    //         [productID]: Math.max(0, (prevquantities[productID] || 0) + value)
+    //     }))
+    // }
 
     // load all redux states
     const userProducts = useSelector(state => state.userProducts.items);
@@ -97,7 +97,42 @@ const UserProducts = () => {
         return total + (product.Price * cartItems[productId]);
     }, 0)
 
+    const logOut = () => {
+        sessionStorage.clear();
+        dispatch(logout());
+        navigate('/login');
+    }
 
+    const checkout = async () => {
+        const id = sessionStorage.getItem('id')?.toString();
+        const token = sessionStorage.getItem('token');
+        let cartItemsForCheckout = Object.entries(cartItems).filter(([productId, quantity]) => quantity > 0)
+        // need to iterate through each productId and find the price for each one and
+        // then add the price to the object as a "Price When Bought" key
+        // then add the object to the checkoutOrder object
+        let checkoutOrder = cartItemsForCheckout.map(product => {
+            let the_product = userProducts.find(p => p.ProductID === product[0])
+            return {
+                "ProductID": product[0],
+                "Quantity": product[1],
+                "Price When Bought": the_product.Price
+            }
+        })
+        console.log("cartItemsForCheckout: ", cartItemsForCheckout, "productForCheckout: ", checkoutOrder)
+        try {
+            const response = await axios.post(`http://127.0.0.1:8000/users/${id}/orders`, checkoutOrder, {
+                headers: {
+                    'token': token
+                }
+            });
+
+        } catch (error) {
+            alert("error: ", error, "message: ", error.message)
+        }
+
+        //call the logOut function
+        //TODO: finish function
+    }
 
     return (
         <>
@@ -184,7 +219,10 @@ const UserProducts = () => {
                                             <Button
                                                 className="Order"
                                                 variant="success"
-                                                onClick={checkout}
+                                                onClick={() => {
+                                                    checkout()
+                                                    logOut()
+                                                }}
                                             >
                                                 Order
                                             </Button>
@@ -198,22 +236,6 @@ const UserProducts = () => {
             </div>
         </>
     )
-}
-
-const checkout = async () => {
-    const id = sessionStorage.getItem('id')?.toString();
-    const token = sessionStorage.getItem('token');
-    let checkoutOrder = {}
-    try {
-        const response = await axios.post(`http://127.0.0.1:8000/users/${id}/orders`, checkoutOrder, {
-            headers: {
-                'token': token
-            }
-        });
-    } catch (error) {
-        alert("error: ", error)
-    }
-    //TODO: finish function
 }
 
 export default UserProducts

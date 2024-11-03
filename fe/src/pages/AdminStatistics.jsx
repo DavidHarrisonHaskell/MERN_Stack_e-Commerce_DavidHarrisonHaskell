@@ -73,6 +73,14 @@ const AdminStatistics = () => {
         navigate('/login');
     }
 
+    const generateColors = (num) => {
+        let colors = [];
+        for (let i = 0; i < num; i++) {
+            colors.push(`hsl(${i * 30}, 70%, 50%)`);
+        }
+        return colors;
+    }
+
     const statisticsInformation = () => {
         let productsSold = allProducts.map(product => {
             let productSold = {
@@ -103,33 +111,10 @@ const AdminStatistics = () => {
                 {
                     label: 'Products Sold',
                     data: quantitySold,
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.6)',
-                        'rgba(54, 162, 235, 0.6)',
-                        'rgba(255, 206, 86, 0.6)',
-                        'rgba(75, 192, 192, 0.6)',
-                        'rgba(153, 102, 255, 0.6)',
-                        'rgba(255, 159, 64, 0.6)',
-                        'rgba(255, 99, 132, 0.6)',
-                        'rgba(54, 162, 235, 0.6)',
-                        'rgba(255, 206, 86, 0.6)',
-                        'rgba(75, 192, 192, 0.6)',
-                        'rgba(153, 102, 255, 0.6)',
-                        'rgba(255, 159, 64, 0.6)'
-                    ],
+                    backgroundColor: generateColors(productTitles.length),
                     borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)',
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
+                        'rgba(0, 0, 0, 1)',
+
                     ],
                     borderWidth: 1,
                     // dataLabels: {
@@ -194,7 +179,10 @@ const AdminStatistics = () => {
         setSelectedUser(e.target.value);
         const userOrders = statisticsInformationUsersOrders().find(user => user["User ID"] == e.target.value);
         if (userOrders) {
-            const productTitles = userOrders["Orders"].map(product => product["Product Title"]);
+            const productTitles = userOrders["Orders"].map(product => {
+                const the_product = allProducts.find(p => p._id == product.ProductID);
+                return the_product.Title;
+            });
             const quantityBought = userOrders["Orders"].map(product => product["Quantity"]);
 
             const colors = productTitles.map((__, index) => `hsl(${index * 30}, 70%, 50%)`);

@@ -16,6 +16,14 @@ const AdminCustomers = () => {
     const users = useSelector(state => state.users.items);
     const nonAdminUsers = users.filter(user => user.admin === false)
 
+    const formatDate = (date) => {
+        const orderDate = new Date(date);
+        const day = String(orderDate.getDate());
+        const month = String(orderDate.getMonth() + 1);
+        const year = orderDate.getFullYear();
+        return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+    }
+
     const getUsersInformation = () => { // function works perfectly
 
         const getUserRegistrationDate = (date) => {
@@ -41,7 +49,7 @@ const AdminCustomers = () => {
             let productsBought = userOrders.flatMap(order =>
                 order.Orders.map(product => ({
                     "ProductID": product.ProductID,
-                    "ProductTitle": products.find(p => p._id === product.ProductID).Title,
+                    "ProductTitle": products.find(p => p._id === product.ProductID)?.Title,
                     "Quantity": product.Quantity,
                     "OrderDate": order["Order Date"]
                 }))
@@ -58,7 +66,7 @@ const AdminCustomers = () => {
             return {
                 "Product Title": product["ProductTitle"],
                 "Quantity": product["Quantity"],
-                "Order Date": product["OrderDate"]
+                "Order Date": formatDate(product["OrderDate"])
             }
         })
     }
