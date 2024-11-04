@@ -16,7 +16,6 @@ export const fetchUserAccount = ({ id }) => async dispatch => {
                 'token': token
             }
         });
-        console.log("response.data.userAccount: ", response.data.user)
         dispatch(fetchUserAccountSuccess(response.data))
     } catch (error) {
         dispatch(fetchUserAccountFailure(error.message))
@@ -24,7 +23,6 @@ export const fetchUserAccount = ({ id }) => async dispatch => {
 }
 
 export const updateUserAccount = ({ id, user }) => async dispatch => {
-    console.log("user: ", user, "id: ", id)
     dispatch(fetchUserAccountStart())
     try {
         const token = sessionStorage.getItem('token');
@@ -33,7 +31,6 @@ export const updateUserAccount = ({ id, user }) => async dispatch => {
                 'token': token
             }
         });
-        console.log("response.data.userAccount: ", response.data.user)
         dispatch(fetchUserAccountSuccess(response.data))
     } catch (error) {
         dispatch(fetchUserAccountFailure(error.message))

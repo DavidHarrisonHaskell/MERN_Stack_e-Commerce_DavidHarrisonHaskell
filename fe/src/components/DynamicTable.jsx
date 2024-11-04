@@ -18,7 +18,6 @@ const DynamicTable = (props) => {
         if (!newEditableRows[rowIndex]) {
             newEditableRows[rowIndex] = {};
         }
-        // console.log("e.target.value", value)
         newEditableRows[rowIndex][columnKey] = value
         setEditableRows(newEditableRows);
     };
