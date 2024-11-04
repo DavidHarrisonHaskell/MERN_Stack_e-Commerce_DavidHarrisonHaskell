@@ -67,27 +67,6 @@ Router.get('/:id/products', verifyUser, async (req, res) => {
     }
 });
 
-
-// the route for posting an order should be /:id/orders and receives in its body
-// an array of objects with the following structure:
-// const ProductInformationSchema = new mongoose.Schema({
-//     "ProductID": {
-//         type: String,
-//     },
-//     "Product Title": {
-//         type: String,
-//     },
-//     "Quantity": {
-//         type: Number,
-//     }
-// }, {
-//     versionKey: false
-// });
-// =>  "Orders": {
-//         type: [ProductInformationSchema],
-//     }
-
-
 // user route for posting an order to the database
 Router.post('/:id/orders', verifyUser, async (req, res) => {
     try {

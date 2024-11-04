@@ -1,16 +1,12 @@
 import Navbar from '../components/Navbar'
-import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { logout } from '../actions/index';
-import { Button } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
 import { Table } from 'react-bootstrap';
-import { useEffect } from 'react';
 
 
 
 const UserOrders = () => {
     const userOrders = useSelector(state => state.userOrders.items);
-    const products = useSelector(state => state.products.items);
+    const userProducts = useSelector(state => state.userProducts.items);
 
     const findPrice = (price, quantity) => {
         return price * quantity
@@ -23,8 +19,8 @@ const UserOrders = () => {
     }
 
     const getProductTitle = (productID) => {
-        const product = products.find(product => product._id == productID)
-        return product?.Title
+        const product = userProducts.find(product => product.ProductID == productID)
+        return product?.["Product Title"]
     }
     return (
         <>

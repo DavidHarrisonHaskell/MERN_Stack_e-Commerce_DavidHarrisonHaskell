@@ -17,9 +17,6 @@ const addCategoryRepository = async (body) => {
 
 const updateCategoryRepository = async (id, body) => {
     const updatedCategory = await CategoriesModel.findByIdAndUpdate(id, body, { new: true });
-    // const updatedProduct = await ProductsModel.updateMany(
-
-    // )
     return updatedCategory;
 }
 

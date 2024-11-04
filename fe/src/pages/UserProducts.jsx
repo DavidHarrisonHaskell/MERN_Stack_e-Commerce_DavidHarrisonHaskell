@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchUserProducts } from '../slices/userProductsSlice';
 import { fetchUserOrders } from '../slices/userOrdersSlice';
 import { fetchUserAccount } from '../slices/userAccountSlice';
-import { fetchProducts } from '../slices/productsSlice';
 import { addToCart, removeFromCart, setCartQuantity, initializeCart } from "../slices/userCartSlice";
 import { logout } from '../actions/index';
 import { Button } from 'react-bootstrap';
@@ -17,17 +16,6 @@ const UserProducts = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    //state to manage quantities
-    const [quantities, setQuantities] = useState({});
-
-    //handle quantity change
-    // const handleQuantityChange = (productID, value) => {
-    //     setQuantities(prevquantities => ({
-    //         ...prevquantities,
-    //         [productID]: Math.max(0, (prevquantities[productID] || 0) + value)
-    //     }))
-    // }
-
     // load all redux states
     const userProducts = useSelector(state => state.userProducts.items);
     const userProductsStatus = useSelector(state => state.userProducts.status);
@@ -38,9 +26,6 @@ const UserProducts = () => {
 
     const userAccountStatus = useSelector(state => state.userAccount.status);
     const userAccountError = useSelector(state => state.userAccount.error);
-
-    const productsStatus = useSelector(state => state.products.status);
-    const productsError = useSelector(state => state.products.error);
 
     const cartItems = useSelector(state => state.userCart.items);
 
@@ -62,16 +47,7 @@ const UserProducts = () => {
                 dispatch(fetchUserAccount({ id }));
             } catch (error) { console.log(error) }
         }
-        if (productsStatus === 'idle') {
-            try {
-                dispatch(fetchProducts());
-                console.log("success")
-            } catch (error) {
-                console.log(error)
-                console.log("unsuccessful")
-            }
-        }
-    }, [userProductsStatus, userOrdersStatus, userAccountStatus, productsStatus, dispatch]);
+    }, [userProductsStatus, userOrdersStatus, userAccountStatus, dispatch]);
 
 
     useEffect(() => {
@@ -140,8 +116,6 @@ const UserProducts = () => {
                         {userOrdersStatus === 'failed' && <p>{console.log(userOrdersError)}</p>}
                         {userAccountStatus === 'loading' && <h1>Loading...</h1>}
                         {userAccountStatus === 'failed' && <p>{console.log(userAccountError)}</p>}
-                        {productsStatus === 'loading' && <h1>Loading...</h1>}
-                        {productsStatus === 'failed' && <p>{console.log(productsError)}</p>}
                         <div className="containerForEachProduct">
                             {userProductsStatus === 'succeeded' && userProducts.map(product => (
                                 <div key={product.ProductID} className="userProducts">

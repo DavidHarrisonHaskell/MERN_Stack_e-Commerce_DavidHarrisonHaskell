@@ -1,6 +1,5 @@
 import Navbar from "../components/Navbar";
 import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import DynamicTable from "../components/DynamicTable.jsx";
 import Button from "react-bootstrap/Button";

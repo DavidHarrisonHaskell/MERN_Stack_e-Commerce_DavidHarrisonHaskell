@@ -51,7 +51,7 @@ const getProductsService = async (id) => {
             const user = allUsers.find(user => user._id == order.UserID); // find the user who made the order
             // check if the user allows others to see his orders or if the user is the one viewing the product
             // or if the user exists
-            return user && (user.allowOthersToSeeMyOrders || user._id === id);
+            return user && (user.allowOthersToSeeMyOrders || user._id.toString() === id);
         })
 
         filteredUserOrders.forEach(singleUserOrder => { // loop through all the orders of the user

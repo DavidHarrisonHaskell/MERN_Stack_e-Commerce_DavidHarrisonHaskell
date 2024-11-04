@@ -104,7 +104,6 @@ const AdminHome = () => {
                                             <h2
                                                 contentEditable
                                                 suppressContentEditableWarning
-                                                // onBlur={() => handleSave(category._id)}
                                                 onInput={handleChange}
                                                 className="categoryNameAdmin"
                                             >

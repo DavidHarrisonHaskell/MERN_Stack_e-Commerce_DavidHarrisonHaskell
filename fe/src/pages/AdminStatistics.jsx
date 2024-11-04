@@ -117,17 +117,6 @@ const AdminStatistics = () => {
 
                     ],
                     borderWidth: 1,
-                    // dataLabels: {
-                    //     anchor: 'end',
-                    //     align: 'end',
-                    //     formatter: (value, context) => {
-                    //         return value
-                    //     },
-                    //     color: '#000',
-                    //     font: {
-                    //         weight: 'bold'
-                    //     }
-                    // }
                 }
             ]
         });
