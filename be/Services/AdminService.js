@@ -68,10 +68,8 @@ const updateUserService = (id, body) => {
 const deleteUserService = async (id) => {
     // delete the user from the database
     const deleted_user = await adminRepository.deleteUserRepository(id);
-    console.log("deleted_user", deleted_user);
     // delete all of that user's orders from the database
     const deleted_orders = await adminRepository.deleteAllOrdersOfUserRepository(id);
-    console.log("deleted_orders", deleted_orders);
     return { deleted_user, deleted_orders };
 }
 

@@ -43,7 +43,6 @@ Router.put('/:id', verifyUser, async (req, res) => {
 Router.get('/:id/orders', verifyUser, async (req, res) => {
     try {
         const userOrders = await UsersService.getUserOrdersService(req.params.id);
-        console.log('userOrders: ', userOrders);
         return res.json({ success: true, userOrders: userOrders});
     } catch (error) {
         return res.status(500).json({ message: error.message });

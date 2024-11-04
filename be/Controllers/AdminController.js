@@ -3,8 +3,6 @@ const Router = express.Router();
 const adminService = require('../Services/adminService');
 const UsersService = require('../Services/usersService');
 const verifyAdmin = require('../Middlewares/verifyAdmin'); // Import the verifyAdmin middleware
-const verifyUser = require('../Middlewares/verifyUser');
-const verifyAdminOrUser = require('../Middlewares/verifyAdminOrUser');
 
 // Load environment variables
 require('dotenv').config();
@@ -147,7 +145,7 @@ Router.delete('/users/:id', verifyAdmin, async (req, res) => { // This is a rout
 ////////////////////////////////////////
 
 // product routes
-Router.get('/products', verifyAdminOrUser, async (req, res) => { // This is a route that returns all products if the user is an admin
+Router.get('/products', verifyAdmin, async (req, res) => { // This is a route that returns all products if the user is an admin
     try {
         const products = await adminService.getProductsService();
         return res.json(products);
@@ -173,7 +171,6 @@ Router.post('/products', verifyAdmin, async (req, res) => { // This is a route t
         const Description = req.body.Description;
         const Price = req.body.Price;
         const LinkToPic = req.body["Link to pic"];
-        console.log("req.body", req.body)
         if (!Title || !CategoryID || !Description || !Price || !LinkToPic) {
             return res.status(400).json({ error: 'Please enter all fields' });
         }
