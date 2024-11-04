@@ -1,6 +1,8 @@
 # MERN_Stack_e-Commerce_DavidHarrisonHaskell
-<u> In Progress </u>
  <u>A MERN Stack website for e-Commerce, meant for customers, an admin, displaying products, showing statistics and more</u>
+
+## Demo
+[![Image ALT TEXT HERE](https://img.youtube.com/vi/jb80I4UxoGo/0.jpg)](https://youtube.com/watch?v=jb80I4UxoGo)
 
 ## Backend with Node.JS
 By utilizing Node.JS, I established a server using express. The server performs CRUD operations with the MongoDB database and is able to send information to the frontend.
