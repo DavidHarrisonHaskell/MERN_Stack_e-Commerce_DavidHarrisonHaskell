@@ -185,6 +185,18 @@ const AdminStatistics = () => {
                     }
                 ]
             });
+        } else {
+            setBarChartData({
+                labels: [],
+                datasets: [
+                    {
+                        data: [],
+                        backgroundColor: 'rgba(54,162,235,0.6)',
+                        borderColor: 'rgba(54,162,235,1)',
+                        borderWidth: 1
+                    }
+                ]
+            })
         }
     }
 
@@ -196,121 +208,121 @@ const AdminStatistics = () => {
 
 
     useEffect(() => {
-        if (allOrders.length > 0 && allProducts.length > 0) {
-            statisticsInformation();
-            statisticsInformationUsersOrders();
-        }
-    }, [allOrders, allProducts]);
+                if (allOrders.length > 0 && allProducts.length > 0) {
+                    statisticsInformation();
+                    statisticsInformationUsersOrders();
+                }
+            }, [allOrders, allProducts]);
 
 
-    return (
-        <>
-            <Navbar /><br />
-            <div className="adminStatisticsComponent">
-                <h1 className="headerStatisticsAdmin"><b>Statistics</b></h1>
-                {chartData.labels.length > 0 && chartData.datasets[0].data.length > 0 && (
-                    <>
-                        <div className="pieChartStatistics">
-                            <h2 className="productsSoldHeader">Products Sold</h2>
-                            <Pie
-                                data={chartData}
-                                options={{
-                                    plugins: {
-                                        legend: {
-                                            display: true,
-                                            position: 'top',
-                                        },
-                                        datalabels: {
-                                            anchor: 'center',
-                                            align: 'center',
-                                            formatter: (value, context) => {
-                                                if (value !== 0) {
-                                                    return (
-                                                        context.chart.data.labels[context.dataIndex] + ': ' + value
-                                                    );
-                                                } else {
-                                                    return '';
+            return (
+                <>
+                    <Navbar /><br />
+                    <div className="adminStatisticsComponent">
+                        <h1 className="headerStatisticsAdmin"><b>Statistics</b></h1>
+                        {chartData.labels.length > 0 && chartData.datasets[0].data.length > 0 && (
+                            <>
+                                <div className="pieChartStatistics">
+                                    <h2 className="productsSoldHeader">Products Sold</h2>
+                                    <Pie
+                                        data={chartData}
+                                        options={{
+                                            plugins: {
+                                                legend: {
+                                                    display: true,
+                                                    position: 'top',
+                                                },
+                                                datalabels: {
+                                                    anchor: 'center',
+                                                    align: 'center',
+                                                    formatter: (value, context) => {
+                                                        if (value !== 0) {
+                                                            return (
+                                                                context.chart.data.labels[context.dataIndex] + ': ' + value
+                                                            );
+                                                        } else {
+                                                            return '';
+                                                        }
+                                                    },
+                                                    color: '#000000', // Changed to black hard color
+                                                    font: {
+                                                        weight: 'bold',
+                                                        size: 16
+                                                    }
+                                                },
+                                            },
+                                            elements: {
+                                                arc: {
+                                                    borderWidth: 1,
+                                                    borderColor: '#000000', // Changed to black hard color
+                                                    shadowOffsetX: 3,
+                                                    shadowOffsetY: 3,
+                                                    shadowBlur: 10,
+                                                    shadowColor: 'rgba(0, 0, 0, 0.5)'
                                                 }
-                                            },
-                                            color: '#000000', // Changed to black hard color
-                                            font: {
-                                                weight: 'bold',
-                                                size: 16
                                             }
-                                        },
-                                    },
-                                    elements: {
-                                        arc: {
-                                            borderWidth: 1,
-                                            borderColor: '#000000', // Changed to black hard color
-                                            shadowOffsetX: 3,
-                                            shadowOffsetY: 3,
-                                            shadowBlur: 10,
-                                            shadowColor: 'rgba(0, 0, 0, 0.5)'
-                                        }
-                                    }
-                                }}
-                            />
-                        </div>
+                                        }}
+                                    />
+                                </div>
 
-                    </>
-                )}
-                <br /><br />
-                <h2 className="productsBoughtHeader">Products Quantity Per Customer</h2>
-                <label htmlFor="users"><b>Sort by Customer</b></label><br /><br />
-                <select id="users" name="users" onChange={handleUserChange}>
-                    <option value="">Select a user:</option>
-                    {allUsers.map(user => (
-                        <option key={user._id} value={user._id}>{user["First Name"]} {user["Last Name"]}</option>
-                    ))}
-                </select>
-                <div className="barChartStatistics">
-                    {barChartData.labels.length > 0 && barChartData.datasets[0].data.length > 0 ? (
-                        <>
-                            <Bar
-                                data={barChartData}
-                                options={{
-                                    plugins: {
-                                        legend: {
-                                            display: false,
-                                            position: 'top',
-                                        },
-                                        datalabels: {
-                                            anchor: 'center',
-                                            align: 'center',
-                                            formatter: (value, context) => {
-                                                return value
+                            </>
+                        )}
+                        <br /><br />
+                        <h2 className="productsBoughtHeader">Products Quantity Per Customer</h2>
+                        <label htmlFor="users"><b>Sort by Customer</b></label><br /><br />
+                        <select id="users" name="users" onChange={handleUserChange}>
+                            <option value="">Select a user:</option>
+                            {allUsers.map(user => (
+                                <option key={user._id} value={user._id}>{user["First Name"]} {user["Last Name"]}</option>
+                            ))}
+                        </select>
+                        <div className="barChartStatistics">
+                            {barChartData.labels.length > 0 && barChartData.datasets[0].data.length > 0 ? (
+                                <>
+                                    <Bar
+                                        data={barChartData}
+                                        options={{
+                                            plugins: {
+                                                legend: {
+                                                    display: false,
+                                                    position: 'top',
+                                                },
+                                                datalabels: {
+                                                    anchor: 'center',
+                                                    align: 'center',
+                                                    formatter: (value, context) => {
+                                                        return value
+                                                    },
+                                                    color: '#000000', // Changed to black hard color
+                                                    font: {
+                                                        weight: 'bold',
+                                                        size: 16
+                                                    }
+                                                },
                                             },
-                                            color: '#000000', // Changed to black hard color
-                                            font: {
-                                                weight: 'bold',
-                                                size: 16
+                                            elements: {
+                                                bar: {
+                                                    borderWidth: 1,
+                                                    borderColor: '#000000', // Changed to black hard color
+                                                    shadowOffsetX: 3,
+                                                    shadowOffsetY: 3,
+                                                    shadowBlur: 10,
+                                                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                                }
                                             }
-                                        },
-                                    },
-                                    elements: {
-                                        bar: {
-                                            borderWidth: 1,
-                                            borderColor: '#000000', // Changed to black hard color
-                                            shadowOffsetX: 3,
-                                            shadowOffsetY: 3,
-                                            shadowBlur: 10,
-                                            shadowColor: 'rgba(0, 0, 0, 0.5)'
-                                        }
-                                    }
-                                }}
-                            /><br />
-                        </>
-                    ) : (
-                        <div className="NoProductsBought">
-                            <h3>No products Bought</h3><br />
+                                        }}
+                                    /><br />
+                                </>
+                            ) : (
+                                <div className="NoProductsBought">
+                                    <h3>No products Bought</h3><br />
+                                </div>
+                            )}
                         </div>
-                    )}
-                </div>
-                <Button variant="secondary" onClick={logOut}>Log Out</Button>
-            </div>
-        </>
-    );
-}
+                        <Button variant="secondary" onClick={logOut}>Log Out</Button>
+                    </div>
+                </>
+            );
+        }
 
-export default AdminStatistics;
+        export default AdminStatistics;
